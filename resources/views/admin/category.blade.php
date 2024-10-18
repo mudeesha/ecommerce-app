@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head> 
+  <head>
     @include('admin.css')
 
     <style type="text/css">
@@ -15,7 +15,22 @@
         align-items: center;
         margin: 30px;
       }
-      
+
+      .table_deg {
+        text-align: center;
+        margin: auto;
+        border: 2px solid yellowgreen;
+        margin-top: 50px;
+        width: 600px;
+      }
+
+      th {
+        background-color: skyblue;
+        padding: 15px;
+        font-size: 20px;
+        color: white;
+      }
+
     </style>
   </head>
   <body>
@@ -30,10 +45,10 @@
       <div class="page-content">
         <div class="page-header">
           <div class="container-fluid">
-            
+
             <h1 style="color:white;">Add Category</h1>
             <div class="div_deg">
-              
+
               <form action="{{ route('add_category') }}" method="POST">
                 @csrf
                 <div>
@@ -43,6 +58,21 @@
               </form>
 
             </div>
+
+            <div>
+                <table class="table_deg">
+                    <tr>
+                        <th>category Name</th>
+                    </tr>
+
+                    @foreach ($data as $data)
+                    <tr>
+                        <td>{{$data->category_name}}</td>
+                    </tr>
+                    @endforeach
+                </table>
+
+            <div>
 
       </div>
     </div>
