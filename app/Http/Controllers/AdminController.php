@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\category;
+use App\Models\Product;
 use Flasher\Toastr\Prime\ToastrInterface;
 
 class AdminController extends Controller
@@ -14,13 +15,28 @@ class AdminController extends Controller
 
     public function getCategories(Request $request) {
         $search = $request->input('search');
-        $perPage = 7; // Number of items per page
+        $perPage = 7; //number of items per page
 
-        $categories = Category::when($search, function($query, $search) {
-            return $query->where('category_name', 'LIKE', '%' . $search . '%');
-        })->paginate($perPage);
+        // $categories = Category::when($search, function($query, $search) {
+        //     return $query->where('category_name', 'LIKE', '%' . $search . '%');
+        // })->paginate($perPage);
 
-        return response()->json($categories);
+        // return response()->json($categories);
+
+        try {
+            $categories = Category::when($search, function($query, $search) {
+                return $query->where('category_name', 'LIKE', '%' . $search . '%');
+            })->paginate($perPage);
+    
+            return response()->json($categories);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching categories: ' . $e->getMessage());
+    
+            return response()->json([
+                'error' => 'An error occurred while fetching categories.',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function addCategory(Request $request)
@@ -81,8 +97,8 @@ class AdminController extends Controller
         $search = $request->input('search');
         $perPage = 7; // Number of items per page
 
-        $data = Category::when($search, function($query, $search) {
-            return $query->where('category_name', 'LIKE', '%' . $search . '%');
+        $data = Product::when($search, function($query, $search) {
+            return $query->where('title', 'LIKE', '%' . $search . '%');
         })->paginate($perPage);
 
         return response()->json($data);

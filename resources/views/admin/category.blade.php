@@ -73,9 +73,11 @@
     <!-- header end -->
 
     <div class="d-flex align-items-stretch">
-      <!-- Sidebar Navigation-->
+   
+    <!-- Sidebar Navigation-->
       @include('admin.sidebar')
       <!-- Sidebar Navigation end-->
+    
       <div class="page-content">
         <div class="page-header">
           <div class="container-fluid">
@@ -318,7 +320,7 @@
             // Send AJAX request to update the category
             $.ajax({
                 url: '/update_category/' + categoryId,
-                type: 'POST',
+                type: 'PATCH',
                 data: {
                     _token: '{{ csrf_token() }}',
                     category_name: categoryName

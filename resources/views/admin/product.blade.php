@@ -30,7 +30,7 @@
         margin: auto;
         /* border: 2px solid #DB6574; */
         margin-top: 15px;
-        width: 600px;
+        width: 1100px;
       }
 
       th {
@@ -88,7 +88,7 @@
 
                     <div class="add-btn-wrappper">
                         <input type="text" id="search-category" placeholder="Search categories..." class="form-control">
-                        <button class="btn btn-primary add-btn" type="submit" data-toggle="modal" data-target="#categoryAddModal">Add category</button>
+                        <button class="btn btn-primary add-btn" type="submit" data-toggle="modal" data-target="#productAddModal">Add category</button>
                     </div>
                     <table class="table_deg" id="categoryTable">
                         <thead>
@@ -99,6 +99,7 @@
                                 <th>Price</th>
                                 <th>Category</th>
                                 <th>Quantity</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -221,24 +222,31 @@
             // Fetch data function with pagination
         function fetchCategories(searchKeyword = '', page = 1) {
             $.ajax({
-                url: '/get_categories',
+                url: '/get_products',
                 type: 'GET',
                 data: {
                     search: searchKeyword, // Pass the search keyword to the server
                     page: page // Pass the current page
                 },
                 success: function(data) {
+                    console.log(data);
+                    
                     let tableBody = $('#categoryTable tbody');
-                    tableBody.empty();  // Clear existing rows if any
+                    tableBody.empty();
 
                     // Loop through the data and generate table rows
-                    data.data.forEach(function(category) {  // `data.data` because of pagination object
+                    data.data.forEach(function(data) {  // `data.data` because of pagination object
                         let row = `
                             <tr>
-                                <td>${category.category_name}</td>
+                                <td>${data.title}</td>
+                                <td>${data.description}</td>
+                                <td>${data.image}</td>
+                                <td>${data.price}</td>
+                                <td>${data.category}</td>
+                                <td>${data.quantity}</td>
                                 <td>
-                                    <button type="button" class="btn btn-success edit-category-btn" data-toggle="modal" data-target="#categoryEditModal" data-id="${category.id}">Edit</button>
-                                    <button type="button" class="btn btn-danger" onclick="confirmation(event)" data-id="${category.id}">Delete</button>
+                                    <button type="button" class="btn btn-success edit-category-btn" data-toggle="modal" data-target="#productEditModal" data-id="${data.id}">Edit</button>
+                                    <button type="button" class="btn btn-danger" onclick="confirmation(event)" data-id="${data.id}">Delete</button>
                                 </td>
                             </tr>
                         `;
