@@ -69,4 +69,67 @@ class AdminController extends Controller
     }
 
 
+
+
+
+    //product
+    public function viewProduct() {
+        return view('admin.product');
+    }
+
+    public function getProducts(Request $request) {
+        $search = $request->input('search');
+        $perPage = 7; // Number of items per page
+
+        $data = Category::when($search, function($query, $search) {
+            return $query->where('category_name', 'LIKE', '%' . $search . '%');
+        })->paginate($perPage);
+
+        return response()->json($data);
+    }
+
+    public function addProduct(Request $request)
+    {
+        $request->validate([
+            'category_name' => 'required|string|max:255',
+        ]);
+
+        try {
+            $category = new Category();
+            $category->category_name = $request->category_name;
+            $category->save();
+            toastr()->closeButton()->success('Category Added Successfully.');
+
+            return response()->json(['message' => 'Category added successfully'], 201);
+        } catch (\Exception $e) {
+            \Log::error('Error adding category: '.$e->getMessage());
+            return response()->json(['error' => 'Failed to add category'], 500);
+        }
+    }
+
+    public function deleteProduct($id) {
+        $category = Category::find($id);
+
+        if ($category) {
+            $category->delete();
+            return response()->json(['message' => 'Category deleted successfully!']);
+        } else {
+            return response()->json(['error' => 'Category not found.'], 404);
+        }
+    }
+
+
+    public function getProduct($id) {
+        $category = Category::find($id);
+        return response()->json($category);
+    }
+
+    public function updateProduct(Request $request, $id) {
+        $category = Category::find($id);
+        $category->category_name = $request->category_name;
+        $category->save();
+        toastr()->closeButton()->success('Category Updated Successfully.');
+
+        return response()->json(['success' => true]);
+    }
 }

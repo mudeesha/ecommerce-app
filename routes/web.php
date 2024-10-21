@@ -23,13 +23,19 @@ require __DIR__.'/auth.php';
 //admin
 route::get('admin/dashboard', [HomeController::class, 'index'])->middleware(['auth','admin']);
 
+//category
 Route::get('view_category', [AdminController::class, 'view_category'])->middleware(['auth','admin']);
 Route::get('/get_categories', [AdminController::class, 'getCategories'])->name('categories.index')->middleware(['auth','admin']);
-
 Route::post('add_category', [AdminController::class, 'addCategory'])->name('add_category')->middleware(['auth', 'admin']);
-
 route::delete('delete_category/{id}', [AdminController::class, 'deleteCategory'])->middleware(['auth','admin']);
-
 Route::get('/get_category/{id}', [AdminController::class, 'get_category'])->middleware(['auth','admin']);;
-Route::post('/update_category/{id}', [AdminController::class, 'update_category'])->middleware(['auth','admin']);;
+Route::post('/update_category/{id}', [AdminController::class, 'update_category'])->middleware(['auth','admin']);
+
+//product
+Route::get('view_product', [AdminController::class, 'viewProduct'])->middleware(['auth','admin']);
+Route::get('/get_products', [AdminController::class, 'getProducts'])->name('products.index')->middleware(['auth','admin']);
+Route::post('add_product', [AdminController::class, 'addProducts'])->name('add_product')->middleware(['auth', 'admin']);
+route::delete('delete_product/{id}', [AdminController::class, 'deleteProducts'])->middleware(['auth','admin']);
+Route::get('/get_product/{id}', [AdminController::class, 'getProducts'])->middleware(['auth','admin']);;
+Route::post('/update_product/{id}', [AdminController::class, 'updateProducts'])->middleware(['auth','admin']);
 

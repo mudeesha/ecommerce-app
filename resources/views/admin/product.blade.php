@@ -80,7 +80,7 @@
         <div class="page-header">
           <div class="container-fluid">
 
-            <h1 style="color:white;">Add Category</h1>
+            <h1 style="color:white;">Products</h1>
 
 
             <div class="table_container">
@@ -93,8 +93,12 @@
                     <table class="table_deg" id="categoryTable">
                         <thead>
                             <tr>
-                                <th>Category Name</th>
-                                <th>Actions</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Image</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>Quantity</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -104,56 +108,88 @@
 
                     <!-- Pagination links -->
                     <nav>
-                        <ul id="pagination" class="pagination justify-content-center">
+                        <ul id="product-pagination" class="pagination justify-content-center">
                             <!-- Pagination buttons will be appended here -->
                         </ul>
                     </nav>
 
                     <!-- Add Modal -->
-                    <div class="modal fade" id="categoryAddModal" tabindex="-1" role="dialog" aria-labelledby="categoryAddModalTitle" aria-hidden="true">
+                    <div class="modal fade" id="productAddModal" tabindex="-1" role="dialog" aria-labelledby="productAddModalTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Add a New Category</h5>
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add a New Product</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
                             <div class="modal-body">
-                                <form id="edit-category-form">
-                                    <label for="category_name">Category Name</label>
-                                    <input name="category_name" id="add-category_name" value="" class="form-control">
-                                    <input type="hidden" name="category_id" id="category_id">
+                                <form id="add-product-form">
+                                    <label for="product_title">Title</label>
+                                    <input name="product_title" id="add-product-title" value="" class="form-control">
+
+                                    <label for="product_description">Description</label>
+                                    <input name="product_description" id="add-product-description" value="" class="form-control">
+
+                                    <label for="product_image">Image</label>
+                                    <input name="product_image" id="add-product-image" value="" class="form-control">
+
+                                    <label for="product_price">Price</label>
+                                    <input name="product_price" id="add-product-price" value="" class="form-control">
+
+                                    <label for="product_category">Category</label>
+                                    <input name="product_category" id="add-product-category" value="" class="form-control">
+
+                                    <label for="product_quantity">Quantity</label>
+                                    <input name="product_quantity" id="add-product-quantity" value="" class="form-control">
+
+                                    <input type="hidden" name="add-product-id" id="add-product-id">
                                 </form>
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="save-add-category-btn">Save changes</button>
+                            <button type="button" class="btn btn-primary" id="save-add-product-btn">Save changes</button>
                             </div>
                         </div>
                         </div>
                     </div>
 
                     <!-- Edit Modal -->
-                    <div class="modal fade" id="categoryEditModal" tabindex="-1" role="dialog" aria-labelledby="categoryEditModalTitle" aria-hidden="true">
+                    <div class="modal fade" id="productEditModal" tabindex="-1" role="dialog" aria-labelledby="productEditModalTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Update Category</h5>
+                            <h5 class="modal-title" id="exampleModalLongTitle">Update Product</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
                             <div class="modal-body">
-                                <form id="edit-category-form">
-                                    <label for="category_name">Category Name</label>
-                                    <input name="category_name" id="category_name" value="" class="form-control">
-                                    <input type="hidden" name="category_id" id="category_id">
+                                <form id="edit-product-form">
+                                    <label for="product_title">Title</label>
+                                    <input name="product_title" id="edit-product-title" value="" class="form-control">
+
+                                    <label for="product_description">Description</label>
+                                    <input name="product_description" id="edit-product-description" value="" class="form-control">
+
+                                    <label for="product_image">Image</label>
+                                    <input name="product_image" id="edit-product-image" value="" class="form-control">
+
+                                    <label for="product_price">Price</label>
+                                    <input name="product_price" id="edit-product-price" value="" class="form-control">
+
+                                    <label for="product_category">Category</label>
+                                    <input name="product_category" id="edit-product-category" value="" class="form-control">
+
+                                    <label for="product_quantity">Quantity</label>
+                                    <input name="product_quantity" id="edit-product-quantity" value="" class="form-control">
+
+                                    <input type="hidden" name="edit-product-id" id="edit-product-id">
                                 </form>
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="save-category-btn">Save changes</button>
+                            <button type="button" class="btn btn-primary" id="save-edit-product-btn">Save changes</button>
                             </div>
                         </div>
                         </div>
