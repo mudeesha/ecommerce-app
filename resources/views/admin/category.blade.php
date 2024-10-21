@@ -47,21 +47,21 @@
         border: 1px solid skyblue;
       }
       .add-btn-wrappper {
-        width: 100%; /* Take full width of the container */
-        margin-bottom: 10px; /* Add margin below the button for spacing */
-        display: flex; /* Ensure button aligns properly */
-        justify-content: space-between; /* Distribute input and button */
+        width: 100%;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
         align-items: center;
       }
 
       #search-category {
-        flex-grow: 1; /* Make input take available space */
-        margin-right: 10px; /* Space between input and button */
+        flex-grow: 1;
+        margin-right: 10px;
       }
 
       .table-wrapper {
-        display: inline-block; /* Ensure the container wraps the table */
-        margin: 0 auto; /* Center the table container horizontally */
+        display: inline-block;
+        margin: 0 auto;
         text-align: center;
     }
 
@@ -105,7 +105,7 @@
                     <!-- Pagination links -->
                     <nav>
                         <ul id="pagination" class="pagination justify-content-center">
-                            <!-- Pagination buttons will be appended here -->
+                            <!-- Pagination -->
                         </ul>
                     </nav>
 
@@ -188,15 +188,15 @@
                 url: '/get_categories',
                 type: 'GET',
                 data: {
-                    search: searchKeyword, // Pass the search keyword to the server
-                    page: page // Pass the current page
+                    search: searchKeyword,
+                    page: page
                 },
                 success: function(data) {
                     let tableBody = $('#categoryTable tbody');
-                    tableBody.empty();  // Clear existing rows if any
+                    tableBody.empty();
 
                     // Loop through the data and generate table rows
-                    data.data.forEach(function(category) {  // `data.data` because of pagination object
+                    data.data.forEach(function(category) {
                         let row = `
                             <tr>
                                 <td>${category.category_name}</td>
@@ -258,12 +258,11 @@
 
         // add category
         $('#save-add-category-btn').on('click', function() {
-            // Get the category name from the input field
             let categoryName = $('#add-category_name').val();
 
             // Send AJAX request to add the category
             $.ajax({
-                url: '/add_category', // Update with your route
+                url: '/add_category',
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}', // Include CSRF token
@@ -274,12 +273,10 @@
                     swal("Category added successfully!", {
                         icon: "success",
                     }).then(() => {
-                        // Clear the input field and hide the modal
-                        $('#add-category_name').val(''); // Clear input
+                        $('#add-category_name').val('');
                         $('#categoryAddModal .close').trigger('click');
 
-                        // Reload categories
-                        fetchCategories(); // Refresh the category table
+                        fetchCategories();
                     });
                 },
                 error: function(err) {
@@ -339,28 +336,24 @@
             });
         });
 
-        // Separate delete function
+        //delete function
         function deleteCategory(categoryId) {
             // Perform AJAX request to delete the category
             $.ajax({
                 url: '/delete_category/' + categoryId,
                 type: 'DELETE',
                 data: {
-                    _token: '{{ csrf_token() }}',  // Include CSRF token for Laravel
+                    _token: '{{ csrf_token() }}',
                 },
                 success: function(response) {
                     // Show success message
                     swal("Category deleted successfully!", {
                         icon: "success",
                     });
-
-                    // Reload the categories table after deletion
                     fetchCategories();
                 },
                 error: function(err) {
                     console.error("Error deleting category:", err);
-
-                    // Show error message
                     swal("Error", "There was an issue deleting the category.", "error");
                 }
             });
@@ -369,8 +362,6 @@
         // Confirmation for deletion
         window.confirmation = function(ev) {
             ev.preventDefault();
-
-            // Get the category ID from the button's data-id attribute
             var categoryId = ev.currentTarget.getAttribute('data-id');
 
             // SweetAlert confirmation
@@ -383,7 +374,6 @@
             })
             .then((willDelete) => {
                 if (willDelete) {
-                    // Call the delete function
                     deleteCategory(categoryId);
                 }
             });
