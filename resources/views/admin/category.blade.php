@@ -73,11 +73,11 @@
     <!-- header end -->
 
     <div class="d-flex align-items-stretch">
-   
+
     <!-- Sidebar Navigation-->
       @include('admin.sidebar')
       <!-- Sidebar Navigation end-->
-    
+
       <div class="page-content">
         <div class="page-header">
           <div class="container-fluid">
@@ -187,7 +187,7 @@
             // Fetch data function with pagination
         function fetchCategories(searchKeyword = '', page = 1) {
             $.ajax({
-                url: '/get_categories',
+                url: '/admin/categories',
                 type: 'GET',
                 data: {
                     search: searchKeyword,
@@ -264,7 +264,7 @@
 
             // Send AJAX request to add the category
             $.ajax({
-                url: '/add_category',
+                url: '/admin/category',
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}', // Include CSRF token
@@ -296,7 +296,7 @@
 
             // Fetch category data using AJAX
             $.ajax({
-                url: '/get_category/' + categoryId,
+                url: '/admin/category/' + categoryId,
                 type: 'GET',
                 success: function(data) {
                     // Populate modal form fields with category data
@@ -319,7 +319,7 @@
 
             // Send AJAX request to update the category
             $.ajax({
-                url: '/update_category/' + categoryId,
+                url: '/admin/category/' + categoryId,
                 type: 'PATCH',
                 data: {
                     _token: '{{ csrf_token() }}',
@@ -342,7 +342,7 @@
         function deleteCategory(categoryId) {
             // Perform AJAX request to delete the category
             $.ajax({
-                url: '/delete_category/' + categoryId,
+                url: '/admin/category/' + categoryId,
                 type: 'DELETE',
                 data: {
                     _token: '{{ csrf_token() }}',

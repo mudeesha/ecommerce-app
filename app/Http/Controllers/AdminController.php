@@ -9,7 +9,7 @@ use Flasher\Toastr\Prime\ToastrInterface;
 
 class AdminController extends Controller
 {
-    public function view_category() {
+    public function viewCategories() {
         return view('admin.category');
     }
 
@@ -17,21 +17,15 @@ class AdminController extends Controller
         $search = $request->input('search');
         $perPage = 7; //number of items per page
 
-        // $categories = Category::when($search, function($query, $search) {
-        //     return $query->where('category_name', 'LIKE', '%' . $search . '%');
-        // })->paginate($perPage);
-
-        // return response()->json($categories);
-
         try {
             $categories = Category::when($search, function($query, $search) {
                 return $query->where('category_name', 'LIKE', '%' . $search . '%');
             })->paginate($perPage);
-    
+
             return response()->json($categories);
         } catch (\Exception $e) {
             \Log::error('Error fetching categories: ' . $e->getMessage());
-    
+
             return response()->json([
                 'error' => 'An error occurred while fetching categories.',
                 'message' => $e->getMessage()
@@ -70,12 +64,12 @@ class AdminController extends Controller
     }
 
 
-    public function get_category($id) {
+    public function getCategory($id) {
         $category = Category::find($id);
         return response()->json($category);
     }
 
-    public function update_category(Request $request, $id) {
+    public function updateCategory(Request $request, $id) {
         $category = Category::find($id);
         $category->category_name = $request->category_name;
         $category->save();

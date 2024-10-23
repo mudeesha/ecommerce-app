@@ -230,7 +230,7 @@
                 },
                 success: function(data) {
                     console.log(data);
-                    
+
                     let tableBody = $('#categoryTable tbody');
                     tableBody.empty();
 
@@ -307,7 +307,7 @@
 
             // Send AJAX request to add the category
             $.ajax({
-                url: '/add_category', // Update with your route
+                url: '/admin/category/add', // Update with your route
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}', // Include CSRF token
