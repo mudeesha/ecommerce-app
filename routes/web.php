@@ -28,11 +28,11 @@ route::get('admin/dashboard', [HomeController::class, 'index'])->middleware(['au
 //admin.category
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('category/view', [AdminController::class, 'viewCategories'])->middleware(['auth','admin']);
-    Route::get('categories', [AdminCategoryController::class, 'getCategories'])->name('categories.index')->middleware(['auth','admin']);
-    Route::post('category', [AdminCategoryController::class, 'addCategory'])->name('add_category')->middleware(['auth', 'admin']);
-    route::delete('category/{id}', [AdminCategoryController::class, 'deleteCategory'])->middleware(['auth','admin']);
-    Route::get('/category/{id}', [AdminCategoryController::class, 'getCategory'])->middleware(['auth','admin']);;
-    Route::patch('/category/{id}', [AdminCategoryController::class, 'updateCategory'])->middleware(['auth','admin']);
+    Route::get('categories', [AdminCategoryController::class, 'index'])->name('categories.index')->middleware(['auth','admin']);
+    Route::post('category', [AdminCategoryController::class, 'store'])->name('add_category')->middleware(['auth', 'admin']);
+    route::delete('category/{id}', [AdminCategoryController::class, 'destroy'])->middleware(['auth','admin']);
+    Route::get('/category/{id}', [AdminCategoryController::class, 'show'])->middleware(['auth','admin']);;
+    Route::patch('/category/{id}', [AdminCategoryController::class, 'update'])->middleware(['auth','admin']);
 });
 
 //product
