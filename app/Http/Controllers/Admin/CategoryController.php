@@ -7,41 +7,35 @@ use App\Http\Requests\Admin\CategoryFetchRequest;
 use App\Http\Requests\Admin\CategoryShowRequest;
 use App\Http\Requests\Admin\CategoryUpdateRequest;
 use App\Http\Requests\Admin\CategoryDeleteRequest;
-use App\Handlers\Admin\CategoryHandler;
+use App\Services\Admin\CategoryService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Exception;
 
 class CategoryController extends Controller
 {
-    protected $categoryHandler;
+    protected $categoryService;
 
-    public function __construct(CategoryHandler $categoryHandler)
+    public function __construct(CategoryService $categoryService)
     {
-        $this->categoryHandler = $categoryHandler;
+        $this->categoryService = $categoryService;
     }
-
 
     public function index(CategoryFetchRequest $request): JsonResponse
     {
         try {
-            $categories = $this->categoryHandler->index($request->validated());
+            $categories = $this->categoryService->fetchCategories($request->validated());
             return response()->json($categories);
         } catch (Exception $e) {
-            \Log::error('Error fetching categories: ' . $e->getMessage()); // Log the error
-            return response()->json([
-                'error' => 'An error occurred while fetching categories.',
-                'message' => $e->getMessage() // Provide more detail here
-            ], 500);
+            \Log::error('Error fetching categories: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while fetching categories.'], 500);
         }
     }
-
 
     public function store(CategoryAddRequest $request): JsonResponse
     {
         try {
-            $this->categoryHandler->store($request->validated());
-            toastr()->closeButton()->success('Category Added Successfully.');
-
+            $this->categoryService->addCategory($request->validated());
             return response()->json(['message' => 'Category added successfully'], 201);
         } catch (Exception $e) {
             \Log::error('Error adding category: ' . $e->getMessage());
@@ -52,27 +46,19 @@ class CategoryController extends Controller
     public function show(CategoryShowRequest $request, $id): JsonResponse
     {
         try {
-            $category = $this->categoryHandler->fetchCategoryById($id);
+            $category = $this->categoryService->getCategoryById($id);
             return response()->json($category);
         } catch (Exception $e) {
             \Log::error('Error fetching category: ' . $e->getMessage());
-            return response()->json([
-                'error' => 'An error occurred while fetching the category.',
-                'message' => $e->getMessage()
-            ], 500);
+            return response()->json(['error' => 'An error occurred while fetching the category.'], 500);
         }
     }
 
     public function update(CategoryUpdateRequest $request, $id): JsonResponse
     {
         try {
-            // Use handler to process the update
-            $result = $this->categoryHandler->updateCategory($request->validated(), $id);
-
-            // Show toastr message for success (optional)
-            toastr()->closeButton()->success($result['message']);
-
-            return response()->json(['success' => true]);
+            $this->categoryService->updateCategory($request->validated(), $id);
+            return response()->json(['message' => 'Category updated successfully']);
         } catch (Exception $e) {
             \Log::error('Error updating category: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to update category'], 500);
@@ -82,13 +68,11 @@ class CategoryController extends Controller
     public function destroy(CategoryDeleteRequest $request, $id): JsonResponse
     {
         try {
-            // Use handler to process the deletion
-            $result = $this->categoryHandler->deleteCategory($id);
-            return response()->json(['message' => $result['message']]);
+            $this->categoryService->deleteCategory($id);
+            return response()->json(['message' => 'Category deleted successfully']);
         } catch (Exception $e) {
             \Log::error('Error deleting category: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 404);
         }
     }
 }
-

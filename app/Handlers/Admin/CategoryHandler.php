@@ -2,7 +2,7 @@
 
 namespace App\Handlers\Admin;
 
-use App\Models\category;
+use App\Models\Category;
 use Exception;
 
 class CategoryHandler
@@ -11,27 +11,20 @@ class CategoryHandler
     {
         $search = $params['search'] ?? null;
 
-        \Log::info('Searching categories with parameters:', $params); // Log parameters
-
         try {
-            $categories = category::when($search, function($query) use ($search) {
+            return Category::when($search, function($query) use ($search) {
                 return $query->where('category_name', 'LIKE', '%' . $search . '%');
             })->paginate(7);
-
-            return $categories;
         } catch (Exception $e) {
-            \Log::error('Error fetching categories: ' . $e->getMessage()); // Log the error
             throw new Exception('Error fetching categories: ' . $e->getMessage());
         }
     }
 
-
-
-    public function store(array $category_inputs)
+    public function store(array $data)
     {
         try {
             $category = new Category();
-            $category->category_name = $category_inputs['category_name'];
+            $category->category_name = $data['category_name'];
             $category->save();
         } catch (Exception $e) {
             throw new Exception('Error adding category: ' . $e->getMessage());
@@ -56,14 +49,9 @@ class CategoryHandler
     public function updateCategory(array $data, $id)
     {
         try {
-            // Find category by ID
             $category = Category::findOrFail($id);
-
-            // Update category name
             $category->category_name = $data['category_name'];
             $category->save();
-
-            return ['success' => true, 'message' => 'Category Updated Successfully.'];
         } catch (Exception $e) {
             throw new Exception('Error updating category: ' . $e->getMessage());
         }
@@ -73,9 +61,9 @@ class CategoryHandler
     {
         try {
             $category = Category::find($id);
+
             if ($category) {
                 $category->delete();
-                return ['message' => 'Category deleted successfully!'];
             } else {
                 throw new Exception('Category not found.');
             }
