@@ -171,7 +171,7 @@
               </div>
             </div>
             <div class="public-user-block block">
-              <div class="row d-flex align-items-center">                   
+              <div class="row d-flex align-items-center">
                 <div class="col-lg-4 d-flex align-items-center">
                   <div class="order">4th</div>
                   <div class="avatar"> <img src="img/avatar-1.jpg" alt="..." class="img-fluid"></div><a href="#" class="name"><strong class="d-block">Tomas Hecktor</strong><span class="d-block">@tomhecktor</span></a>
@@ -189,7 +189,7 @@
               </div>
             </div>
             <div class="public-user-block block">
-              <div class="row d-flex align-items-center">                   
+              <div class="row d-flex align-items-center">
                 <div class="col-lg-4 d-flex align-items-center">
                   <div class="order">5th</div>
                   <div class="avatar"> <img src="img/avatar-2.jpg" alt="..." class="img-fluid"></div><a href="#" class="name"><strong class="d-block">Alexander Shelby</strong><span class="d-block">@alexshelby</span></a>
@@ -207,7 +207,7 @@
               </div>
             </div>
             <div class="public-user-block block">
-              <div class="row d-flex align-items-center">                   
+              <div class="row d-flex align-items-center">
                 <div class="col-lg-4 d-flex align-items-center">
                   <div class="order">6th</div>
                   <div class="avatar"> <img src="img/avatar-6.jpg" alt="..." class="img-fluid"></div><a href="#" class="name"><strong class="d-block">Arther Kooper</strong><span class="d-block">@artherkooper</span></a>
@@ -244,7 +244,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-4">   
+              <div class="col-lg-4">
                 <div class="stats-with-chart-1 block">
                   <div class="title"> <strong class="d-block">Visit Statistics</strong><span class="d-block">Lorem ipsum dolor sit</span></div>
                   <div class="row d-flex align-items-end justify-content-between">
@@ -311,7 +311,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-6">                                           
+              <div class="col-lg-6">
                 <div class="messages-block block">
                   <div class="title"><strong>New Messages</strong></div>
                   <div class="messages"><a href="#" class="message d-flex align-items-center">

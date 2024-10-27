@@ -9,85 +9,13 @@ use Flasher\Toastr\Prime\ToastrInterface;
 
 class AdminController extends Controller
 {
-    public function viewCategories() {
-        return view('admin.category');
-    }
-
-    public function getCategories(Request $request) {
-        $search = $request->input('search');
-        $perPage = 7; //number of items per page
-
-        try {
-            $categories = Category::when($search, function($query, $search) {
-                return $query->where('category_name', 'LIKE', '%' . $search . '%');
-            })->paginate($perPage);
-
-            return response()->json($categories);
-        } catch (\Exception $e) {
-            \Log::error('Error fetching categories: ' . $e->getMessage());
-
-            return response()->json([
-                'error' => 'An error occurred while fetching categories.',
-                'message' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function addCategory(Request $request)
-    {
-        $request->validate([
-            'category_name' => 'required|string|max:255',
-        ]);
-
-        try {
-            $category = new Category();
-            $category->category_name = $request->category_name;
-            $category->save();
-            toastr()->closeButton()->success('Category Added Successfully.');
-
-            return response()->json(['message' => 'Category added successfully'], 201);
-        } catch (\Exception $e) {
-            \Log::error('Error adding category: '.$e->getMessage());
-            return response()->json(['error' => 'Failed to add category'], 500);
-        }
-    }
-
-    public function deleteCategory($id) {
-        $category = Category::find($id);
-
-        if ($category) {
-            $category->delete();
-            return response()->json(['message' => 'Category deleted successfully!']);
-        } else {
-            return response()->json(['error' => 'Category not found.'], 404);
-        }
-    }
-
-
-    public function getCategory($id) {
-        $category = Category::find($id);
-        return response()->json($category);
-    }
-
-    public function updateCategory(Request $request, $id) {
-        $category = Category::find($id);
-        $category->category_name = $request->category_name;
-        $category->save();
-        toastr()->closeButton()->success('Category Updated Successfully.');
-
-        return response()->json(['success' => true]);
-    }
-
-
-
-
 
     //product
-    public function viewProduct() {
+    public function returnView() {
         return view('admin.product');
     }
 
-    public function getProducts(Request $request) {
+    public function index(Request $request) {
         $search = $request->input('search');
         $perPage = 7; // Number of items per page
 
@@ -98,7 +26,7 @@ class AdminController extends Controller
         return response()->json($data);
     }
 
-    public function addProduct(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'category_name' => 'required|string|max:255',
@@ -117,7 +45,7 @@ class AdminController extends Controller
         }
     }
 
-    public function deleteProduct($id) {
+    public function destroy($id) {
         $category = Category::find($id);
 
         if ($category) {
@@ -129,12 +57,12 @@ class AdminController extends Controller
     }
 
 
-    public function getProduct($id) {
+    public function show($id) {
         $category = Category::find($id);
         return response()->json($category);
     }
 
-    public function updateProduct(Request $request, $id) {
+    public function update(Request $request, $id) {
         $category = Category::find($id);
         $category->category_name = $request->category_name;
         $category->save();

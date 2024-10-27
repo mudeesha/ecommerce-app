@@ -13,7 +13,7 @@
     <!-- Google fonts - Muli-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300,400,700">
     <!-- theme stylesheet-->
-    <link rel="stylesheet" href="{{asset('admincss/css/style.default.css')}}" id="theme-stylesheet'> 
+    <link rel="stylesheet" href="{{asset('admincss/css/style.default.css')}}" id="theme-stylesheet'>
     <!-- Custom stylesheet - for your changes-->
     <link rel="stylesheet" href="{{asset('admincss/css/custom.css')}}">
     <!-- Favicon-->

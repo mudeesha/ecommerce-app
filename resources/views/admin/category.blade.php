@@ -1,249 +1,168 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    @include('admin.css')
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @vite('resources/css/app.css')
+    <title>Admin Dashboard</title>
 
-    <style type="text/css">
-      input[type='text'] {
-        width: 400px;
-        height:  50px;
-      }
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-200 dark:bg-gray-900 dark:text-gray-200">
 
-      .div_deg {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 30px;
-      }
+    <div class="flex h-screen">
+        <!-- Sidebar Component -->
+        <div class="w-64">
+            @include('admin.components.sidebar')
+        </div>
 
-      .table_container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 30px;
-      }
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Navbar Component -->
+            @include('admin.components.navbar')
 
-      .table_deg {
-        width: 100%;
-        table-layout: auto;
-        text-align: center;
-        margin: auto;
-        /* border: 2px solid #DB6574; */
-        margin-top: 15px;
-        width: 600px;
-      }
-
-      th {
-        background-color: skyblue;
-        padding: 15px;
-        font-size: 20px;
-        font-weight: bold;
-        color: white;
-      }
-
-      td {
-        color: white;
-        padding: 10px;
-        border: 1px solid skyblue;
-      }
-      .add-btn-wrappper {
-        width: 100%;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      #search-category {
-        flex-grow: 1;
-        margin-right: 10px;
-      }
-
-      .table-wrapper {
-        display: inline-block;
-        margin: 0 auto;
-        text-align: center;
-    }
-
-    </style>
-  </head>
-  <body>
-    <!-- header start -->
-    @include('admin.header')
-    <!-- header end -->
-
-    <div class="d-flex align-items-stretch">
-
-    <!-- Sidebar Navigation-->
-      @include('admin.sidebar')
-      <!-- Sidebar Navigation end-->
-
-      <div class="page-content">
-        <div class="page-header">
-          <div class="container-fluid">
-
-            <h1 style="color:white;">Add Category</h1>
-
-
-            <div class="table_container">
-                <div class="table-wrapper">
-
-                    <div class="add-btn-wrappper">
-                        <input type="text" id="search-category" placeholder="Search categories..." class="form-control">
-                        <button class="btn btn-primary add-btn" type="submit" data-toggle="modal" data-target="#categoryAddModal">Add category</button>
-                    </div>
-                    <table class="table_deg" id="categoryTable">
-                        <thead>
-                            <tr>
-                                <th>Category Name</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Table Content -->
-                        </tbody>
-                    </table>
-
-                    <!-- Pagination links -->
-                    <nav>
-                        <ul id="pagination" class="pagination justify-content-center">
-                            <!-- Pagination -->
-                        </ul>
-                    </nav>
-
-                    <!-- Add Modal -->
-                    <div class="modal fade" id="categoryAddModal" tabindex="-1" role="dialog" aria-labelledby="categoryAddModalTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Add a New Category</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="edit-category-form">
-                                    <label for="category_name">Category Name</label>
-                                    <input name="category_name" id="add-category_name" value="" class="form-control">
-                                    <input type="hidden" name="category_id" id="category_id">
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="save-add-category-btn">Save changes</button>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-
-                    <!-- Edit Modal -->
-                    <div class="modal fade" id="categoryEditModal" tabindex="-1" role="dialog" aria-labelledby="categoryEditModalTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Update Category</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="edit-category-form">
-                                    <label for="category_name">Category Name</label>
-                                    <input name="category_name" id="category_name" value="" class="form-control">
-                                    <input type="hidden" name="category_id" id="category_id">
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="save-category-btn">Save changes</button>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-
+            <!-- Main Dashboard Content -->
+            <div class="flex-1 p-6 overflow-y-auto">
+                <!-- Dashboard Header Component -->
                 <div>
+                    @include('admin.components.dashboard-header')
+                </div>
+
+                <!-- Top Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    <!-- Include Card Components -->
+                    @include('admin.components.card1')
+                    @include('admin.components.card2')
+                    @include('admin.components.card3')
+                </div>
+
+                <!-- Table -->
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-6 mt-6">
+                    <div class="bg-gray-800 p-4 rounded-lg shadow">
+
+                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" id="categoryTable">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">
+                                            Category ID
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Category Name
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{-- Table content --}}
+                                </tbody>
+                            </table>
+                            <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
+                                <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span class="font-semibold text-gray-900 dark:text-white">1-10</span> of <span class="font-semibold text-gray-900 dark:text-white">1000</span></span>
+                                <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+                                    <li>
+                                        <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                                    </li>
+                                    <li>
+                                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
-      </div>
+        </div>
     </div>
 
+    <!-- Scripts -->
+    <script src="{{ asset('admincss/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Chart.js for charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Theme toggle script -->
+    <script src="{{ asset('js/theme.js') }}"></script>
 
-
-  </body>
+</body>
 </html>
 
-
-<script src="{{ asset('admincss/vendor/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('admincss/vendor/popper.js/umd/popper.min.js') }}"></script>
-<script src="{{ asset('admincss/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="{{ asset('admincss/vendor/jquery.cookie/jquery.cookie.js') }}"></script>
-<script src="{{ asset('admincss/vendor/chart.js/Chart.min.js') }}"></script>
-<script src="{{ asset('admincss/vendor/jquery-validation/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('admincss/js/charts-home.js') }}"></script>
-<script src="{{ asset('admincss/js/front.js') }}"></script>
-
-
 <script type="text/javascript">
-            // Fetch data function with pagination
-        function fetchCategories(searchKeyword = '', page = 1) {
-            $.ajax({
-                url: '/admin/categories',
-                type: 'GET',
-                data: {
-                    search: searchKeyword,
-                    page: page
-                },
-                success: function(data) {
-                    let tableBody = $('#categoryTable tbody');
-                    tableBody.empty();
+    // Fetch data function with pagination
+    function fetchCategories(searchKeyword = '', page = 1) {
+        $.ajax({
+            url: '/admin/category',
+            type: 'GET',
+            data: {
+                search: searchKeyword,
+                page: page
+            },
+            success: function(data) {
+                let tableBody = $('#categoryTable tbody');
+                tableBody.empty();
 
-                    // Loop through the data and generate table rows
-                    data.data.forEach(function(category) {
-                        let row = `
-                            <tr>
-                                <td>${category.category_name}</td>
-                                <td>
-                                    <button type="button" class="btn btn-success edit-category-btn" data-toggle="modal" data-target="#categoryEditModal" data-id="${category.id}">Edit</button>
-                                    <button type="button" class="btn btn-danger" onclick="confirmation(event)" data-id="${category.id}">Delete</button>
-                                </td>
-                            </tr>
-                        `;
-                        tableBody.append(row);
-                    });
+                // Loop through the data and generate table rows
+                data.data.forEach(function(category) {
+                    let row = `
 
-                    // Generate pagination links
-                    generatePagination(data);
-                },
-                error: function(err) {
-                    console.error('Error fetching categories:', err);
-                }
-            });
+
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                ${category.id}
+                            </th>
+                            <td class="px-6 py-4">
+                                ${category.category_name}
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.append(row);
+                });
+
+                // Generate pagination links
+                generatePagination(data);
+            },
+            error: function(err) {
+                console.error('Error fetching categories:', err);
+            }
+        });
+    }
+
+    // Function to generate pagination buttons
+    function generatePagination(data) {
+        let pagination = $('#pagination');
+        pagination.empty(); // Clear the existing pagination
+
+        let currentPage = data.current_page;
+        let lastPage = data.last_page;
+
+        // Previous button
+        if (currentPage > 1) {
+            pagination.append(`<li class="page-item"><a class="page-link" href="#" onclick="fetchCategories('', ${currentPage - 1})">Previous</a></li>`);
         }
 
-        // Function to generate pagination buttons
-        function generatePagination(data) {
-            let pagination = $('#pagination');
-            pagination.empty(); // Clear the existing pagination
-
-            let currentPage = data.current_page;
-            let lastPage = data.last_page;
-
-            // Previous button
-            if (currentPage > 1) {
-                pagination.append(`<li class="page-item"><a class="page-link" href="#" onclick="fetchCategories('', ${currentPage - 1})">Previous</a></li>`);
-            }
-
-            // Page numbers
-            for (let i = 1; i <= lastPage; i++) {
-                let activeClass = (i === currentPage) ? 'active' : '';
-                pagination.append(`<li class="page-item ${activeClass}"><a class="page-link" href="#" onclick="fetchCategories('', ${i})">${i}</a></li>`);
-            }
-
-            // Next button
-            if (currentPage < lastPage) {
-                pagination.append(`<li class="page-item"><a class="page-link" href="#" onclick="fetchCategories('', ${currentPage + 1})">Next</a></li>`);
-            }
+        // Page numbers
+        for (let i = 1; i <= lastPage; i++) {
+            let activeClass = (i === currentPage) ? 'active' : '';
+            pagination.append(`<li class="page-item ${activeClass}"><a class="page-link" href="#" onclick="fetchCategories('', ${i})">${i}</a></li>`);
         }
+
+        // Next button
+        if (currentPage < lastPage) {
+            pagination.append(`<li class="page-item"><a class="page-link" href="#" onclick="fetchCategories('', ${currentPage + 1})">Next</a></li>`);
+        }
+    }
 
 
     $(document).ready(function() {

@@ -21,6 +21,10 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
+    public function returnView() {
+        return view('admin.category');
+    }
+
     public function index(CategoryFetchRequest $request): JsonResponse
     {
         try {
