@@ -3,6 +3,7 @@
 namespace App\Handlers\Admin;
 
 use App\Models\Category;
+use App\Models\AdminLog;
 use Exception;
 
 class CategoryHandler
@@ -27,6 +28,8 @@ class CategoryHandler
             $category->name = $data['name'];
             $category->created_by = auth()->id();
             $category->save();
+
+            $this->logAdmin('create', 'categories', $category->id, 'Created a new category');
         } catch (Exception $e) {
             throw new Exception('Error adding category: ' . $e->getMessage());
         }
@@ -71,5 +74,16 @@ class CategoryHandler
         } catch (Exception $e) {
             throw new Exception('Error deleting category: ' . $e->getMessage());
         }
+    }
+
+    protected function logAdmin(string $action, string $tableName, int $recordId, string $description)
+    {
+        AdminLog::create([
+            'admin_id' => auth()->id(),
+            'action' => $action,
+            'table_name' => $tableName,
+            'record_id' => $recordId,
+            'description' => $description,
+        ]);
     }
 }
