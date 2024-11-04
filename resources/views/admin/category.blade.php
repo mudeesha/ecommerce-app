@@ -9,6 +9,12 @@
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+
+    <!-- Add Toastify CSS and JS via CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+
 </head>
 <body class="bg-gray-900 text-gray-200 dark:bg-gray-900 dark:text-gray-200">
 
@@ -29,6 +35,8 @@
                 <div>
                     @include('admin.components.dashboard-header')
                 </div>
+                @include('admin.components.success-toster')
+                @include('admin.components.error-toster')
 
                 <!-- Top Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
@@ -52,11 +60,11 @@
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                         </svg>
                                     </div>
-                                    <input type="text" id="table-search" class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items">
+                                    <input type="text" id="search-category" class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items">
                                 </div>
 
                                 <!-- Add button -->
-                                <button data-modal-target="category-modal" data-modal-toggle="category-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                <button data-modal-target="category-add-modal" data-modal-toggle="category-add-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" onclick="document.querySelector('.category-modal-des').textContent = 'Add a Category'">
                                     Add a Category
                                 </button>
                             </div>
@@ -81,63 +89,113 @@
                             </table>
                             <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
                                 <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span class="font-semibold text-gray-900 dark:text-white">1-10</span> of <span class="font-semibold text-gray-900 dark:text-white">1000</span></span>
-                                <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-                                    <li>
-                                        <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                                    </li>
-                                    <li>
-                                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                                    </li>
+                                <ul id="pagination" class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+
                                 </ul>
                             </nav>
+
                         </div>
 
                     {{-- </div> --}}
                 </div>
 
+                <!-- Add modal -->
+                <div id="category-add-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div class="relative p-4 w-full max-w-md max-h-full">
+                        <!-- Modal content -->
+                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                            <!-- Modal header -->
+                            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white category-modal-des">
+                                    Add a Category
+                                </h3>
+                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white close-btn" data-modal-toggle="category-add-modal" onclick="$('#add-category-form').find('input').each(function() { $(this).css('border', ''); $(this).next('span').addClass('hidden').text(''); });">
+                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                    </svg>
+                                    <span class="sr-only">Close modal</span>
+                                </button>
+                            </div>
+                            <!-- Modal body -->
+                            <form id="add-category-form" class="p-4 md:p-5 add-category-form" novalidate>
+                                <div class="grid gap-4 mb-4 grid-cols-2">
+                                    <div class="col-span-2">
+                                        <label for="add_category_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                        <input type="text" validate_type="" limit="255" is_required="true" name="add_category_name" id="add_category_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="Type product name" required="">
+                                        <span class="hidden mt-2 text-sm text-red-600 dark:text-red-500">//append here</span>
+                                    </div>
+                                </div>
+                                <button id="add-category-btn" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Save
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Edit modal -->
+                <button id="category-edit-modal-toggle-btn" data-modal-target="category-edit-modal" data-modal-toggle="category-edit-modal" class="hidden block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"></button>
 
+                <div id="category-edit-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div class="relative p-4 w-full max-w-md max-h-full">
+                        <!-- Modal content -->
+                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                            <!-- Modal header -->
+                            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white category-modal-des">
+                                    Update a Category
+                                </h3>
+                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white close-btn" data-modal-toggle="category-edit-modal" onclick="$('#edit-category-form').find('input').each(function() { $(this).css('border', ''); $(this).next('span').addClass('hidden').text(''); });">
+                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                    </svg>
+                                    <span class="sr-only">Close modal</span>
+                                </button>
+                            </div>
+                            <!-- Modal body -->
+                            <form id="edit-category-form" class="p-4 md:p-5 edit-category-form" novalidate>
+                                <div class="grid gap-4 mb-4 grid-cols-2">
+                                    <div class="col-span-2">
+                                        <label for="edit_category_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                        <input type="text" validate_type="" limit="255" is_required="true" name="edit_category_name" id="edit_category_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="Type product name" required="">
+                                        <span class="hidden mt-2 text-sm text-red-600 dark:text-red-500"></span>
+                                        <input type="hidden" name="category_id" id="category_id">
+                                    </div>
+                                </div>
+                                <button id="update-category-btn" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Save
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
+                {{-- delete modal --}}
+                <button id="category-delete-modal-toggle-btn" data-modal-target="category-delete-modal" data-modal-toggle="category-delete-modal" class="hidden block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"></button>
 
-
-
-  <!-- Main modal -->
-  <div id="category-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-      <div class="relative p-4 w-full max-w-md max-h-full">
-          <!-- Modal content -->
-          <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-              <!-- Modal header -->
-              <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white category-modal-des">
-
-                  </h3>
-                  <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="category-modal">
-                      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                      </svg>
-                      <span class="sr-only">Close modal</span>
-                  </button>
-              </div>
-              <!-- Modal body -->
-              <form class="p-4 md:p-5">
-                  <div class="grid gap-4 mb-4 grid-cols-2">
-                      <div class="col-span-2">
-                          <label for="category_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                          <input type="text" name="category_name" id="category_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
-                      </div>
-                  </div>
-                  <button id="save-category-btn" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                      <svg class="me-1 -ms-1 w-5 h-5 category-modal-des" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-
-                  </button>
-              </form>
-          </div>
-      </div>
-  </div>
-
+                <div id="category-delete-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div class="relative p-4 w-full max-w-md max-h-full">
+                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white close-btn" data-modal-hide="category-delete-modal">
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                            <div class="p-4 md:p-5 text-center">
+                                <input type="hidden" name="delete-id" id="delete-id">
+                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                </svg>
+                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this product?</h3>
+                                <button id="category-delete-btn" data-modal-hide="category-delete-modal" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                    Yes, I'm sure
+                                </button>
+                                <button data-modal-hide="category-delete-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No, cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
             </div>
@@ -153,10 +211,79 @@
     <script src="{{ asset('js/theme.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
+
 </body>
 </html>
 
 <script type="text/javascript">
+
+    // Validation function
+    function validateForm(form) {
+        console.log(form);
+
+        let isValid = true;
+
+        form.find("input").each(function() {
+            const validateType = $(this).attr("validate_type");
+            console.log(validateType);
+            const limit = parseInt($(this).attr("limit"), 10);
+            const isRequired = $(this).attr("is_required") === "true";
+            const value = $(this).val().trim();
+            const errorSpan = $(this).next("span");
+
+            // Clear previous error messages
+            errorSpan.addClass("hidden").text("");
+
+            // Required field check
+            if (isRequired && value === "") {
+                errorSpan.removeClass("hidden").text("This field is required.");
+                isValid = false;
+                return false; // Exit early for this field
+            }
+
+            // Length limit check
+            if (value.length > limit) {
+                errorSpan.removeClass("hidden").text(`Exceeds maximum length of ${limit} characters.`);
+                isValid = false;
+                return false;
+            }
+
+            // Type-specific validation
+            if (validateType === "email" && value !== "" && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
+                errorSpan.removeClass("hidden").text("Invalid email format.");
+                isValid = false;
+                return false;
+            } else if (validateType === "digits" && value !== "" && !/^\d+$/.test(value)) {
+                errorSpan.removeClass("hidden").text("Digits only allowed.");
+                isValid = false;
+                return false;
+            } else if (validateType === "float" && value !== "" && !/^\d+(\.\d+)?$/.test(value)) {
+                errorSpan.removeClass("hidden").text("Float numbers only.");
+                isValid = false;
+                return false;
+            } else if (validateType === "text" && value !== "" && !/^[a-zA-Z\s]+$/.test(value)) {
+                errorSpan.removeClass("hidden").text("Text only (letters and spaces allowed).");
+                isValid = false;
+                return false;
+            }
+        });
+
+        return isValid;
+    }
+
+    function tosterAlert(status, message) {
+        var successToast = $("#toast-success");
+        var errorToast = $("#toast-warning");
+
+        if (status === "success") {
+            successToast.find(".description").text(message);
+            successToast.removeClass("hidden").fadeIn().delay(3000).fadeOut();
+        } else if (status === "error") {
+            errorToast.find(".description").text(message);
+            errorToast.removeClass("hidden").fadeIn().delay(3000).fadeOut();
+        }
+    }
+
     // Fetch data function with pagination
     function fetchCategories(searchKeyword = '', page = 1) {
         $.ajax({
@@ -173,8 +300,6 @@
                 // Loop through the data and generate table rows
                 data.data.forEach(function(category) {
                     let row = `
-
-
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -184,8 +309,8 @@
                                 ${category.category_name}
                             </td>
                             <td class="px-6 py-4">
-                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
+                                <button class="edit-btn font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2" onclick="toggleModal('#category-edit-modal-toggle-btn')" data-id="${category.id}">Edit</button>
+                                <button class="delete-btn font-medium text-red-600 dark:text-red-500 hover:underline" onclick="toggleModal('#category-delete-modal-toggle-btn')"  data-id="${category.id}">Delete</button>
                             </td>
                         </tr>
                     `;
@@ -201,7 +326,7 @@
         });
     }
 
-    // Function to generate pagination buttons
+    //pagination
     function generatePagination(data) {
         let pagination = $('#pagination');
         pagination.empty(); // Clear the existing pagination
@@ -211,26 +336,30 @@
 
         // Previous button
         if (currentPage > 1) {
-            pagination.append(`<li class="page-item"><a class="page-link" href="#" onclick="fetchCategories('', ${currentPage - 1})">Previous</a></li>`);
+            pagination.append(`<li><a class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" href="#" onclick="fetchCategories('', ${currentPage - 1})">Previous</a></li>`);
         }
 
         // Page numbers
         for (let i = 1; i <= lastPage; i++) {
-            let activeClass = (i === currentPage) ? 'active' : '';
-            pagination.append(`<li class="page-item ${activeClass}"><a class="page-link" href="#" onclick="fetchCategories('', ${i})">${i}</a></li>`);
-        }
-
+            let activeClass = (i === currentPage)
+                ? 'active bg-gray-500 text-white' // No border class for active link
+                : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white';
+            pagination.append(`<li><a class="flex items-center justify-center px-3 h-8 leading-tight ${activeClass}" href="#" onclick="fetchCategories('', ${i})">${i}</a></li>`);
+}
         // Next button
         if (currentPage < lastPage) {
-            pagination.append(`<li class="page-item"><a class="page-link" href="#" onclick="fetchCategories('', ${currentPage + 1})">Next</a></li>`);
+            pagination.append(`<li><a class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" href="#" onclick="fetchCategories('', ${currentPage + 1})">Next</a></li>`);
         }
     }
 
+    //Toggal modal
+    function toggleModal(btn_id){
+        $(btn_id).trigger('click');
+    }
 
     $(document).ready(function() {
         // Fetch data when the page loads
         fetchCategories();
-
 
         // Event listener for search input
         $('#search-category').on('keyup', function() {
@@ -238,10 +367,18 @@
             fetchCategories(searchKeyword); // Fetch categories based on the search keyword
         });
 
-
         // add category
-        $('#save-category-btn').on('click', function() {
-            let categoryName = $('#category_name').val();
+        $('#add-category-btn').on('click', function(event) {
+            event.preventDefault();
+
+            // Validate data
+            const form = $('#add-category-form');
+            const validation = validateForm(form);
+            if (!validation) {
+                return; // Stop if validation fails
+            }
+
+            let categoryName = $('#add_category_name').val();
 
             // Send AJAX request to add the category
             $.ajax({
@@ -252,51 +389,65 @@
                     category_name: categoryName
                 },
                 success: function(response) {
-                    // Show success message
-                    swal("Category added successfully!", {
-                        icon: "success",
-                    }).then(() => {
-                        $('#category_name').val('');
-                        $('#categoryAddModal .close').trigger('click');
-
-                        fetchCategories();
-                    });
+                    tosterAlert("success",response.message);
+                    $('#category-add-modal .close-btn').trigger('click');
+                    form.find('input').val('');
+                    form.find("input").next("span").addClass("hidden").text("");
+                    fetchCategories();
                 },
-                error: function(err) {
-                    console.error('Error adding category:', err);
-
-                    // Show error message
-                    swal("Error", "There was an issue adding the category.", "error");
+                error: function(xhr) {
+                    // validation errors returned by laravel
+                    if (xhr.status === 422) {
+                        const errors = xhr.responseJSON.errors;
+                        for (const key in errors) {
+                            if (errors.hasOwnProperty(key)) {
+                                tosterAlert("error", errors[key][0]);
+                            }
+                        }
+                    } else {
+                        console.error('Error adding category:', xhr);
+                        tosterAlert("error", "An unexpected error occurred.");
+                    }
                 }
             });
         });
 
         // Edit data
-        $(document).on('click', '.edit-category-btn', function() {
+        $(document).on('click', '.edit-btn', function(event) {
+            event.preventDefault();
+
             let categoryId = $(this).data('id');
 
-            // Fetch category data using AJAX
+            // Fetch a category
             $.ajax({
                 url: '/admin/category/' + categoryId,
                 type: 'GET',
                 success: function(data) {
                     // Populate modal form fields with category data
-                    $('#category_name').val(data.category_name);
+                    $('#edit_category_name').val(data.category_name);
                     $('#category_id').val(data.id);
 
-                    // Show the modal
-                    $('#categoryEditModal').modal('show');
+                    // $('#category-edit-modal-toggle-btn').trigger('click');
                 },
                 error: function(err) {
-                    console.error(err);
+                    tosterAlert("error", err);
                 }
             });
         });
 
         // Save edited data
-        $('#save-category-btn').on('click', function() {
+        $('#update-category-btn').on('click', function(event) {
+            event.preventDefault();
+
+            // Validate data
+            const form = $('#edit-category-form');
+            const validation = validateForm(form);
+            if (!validation) {
+                return;
+            }
+
             let categoryId = $('#category_id').val();
-            let categoryName = $('#category_name').val();
+            let categoryName = $('#edit_category_name').val();
 
             // Send AJAX request to update the category
             $.ajax({
@@ -307,20 +458,34 @@
                     category_name: categoryName
                 },
                 success: function(response) {
-                    // Hide the modal after saving
-                    $('#categoryEditModal').trigger('click');
-
-                    // Reload the category data
+                    tosterAlert("success",response.message);
+                    $('#category-edit-modal .close-btn').trigger('click');
+                    form.find('input').val('');
+                    form.find("input").next("span").addClass("hidden").text("");
                     fetchCategories();
                 },
-                error: function(err) {
-                    console.error(err);
+                error: function(xhr) {
+                    if (xhr.status === 422) {
+                        const errors = xhr.responseJSON.errors;
+                        for (const key in errors) {
+                            if (errors.hasOwnProperty(key)) {
+                                tosterAlert("error", errors[key][0]);
+                            }
+                        }
+                    } else {
+                        console.error('Error Update category:', xhr);
+                        tosterAlert("error", "An unexpected error occurred.");
+                    }
                 }
             });
         });
 
         //delete function
-        function deleteCategory(categoryId) {
+        $('#category-delete-btn').on('click', function(event) {
+            event.preventDefault();
+
+            let categoryId = $('#delete-id').val();
+
             // Perform AJAX request to delete the category
             $.ajax({
                 url: '/admin/category/' + categoryId,
@@ -329,37 +494,16 @@
                     _token: '{{ csrf_token() }}',
                 },
                 success: function(response) {
-                    // Show success message
-                    swal("Category deleted successfully!", {
-                        icon: "success",
-                    });
+                    tosterAlert("success",response.message);
+                    $('#category-delete-modal .close-btn').trigger('click');
                     fetchCategories();
                 },
-                error: function(err) {
-                    console.error("Error deleting category:", err);
-                    swal("Error", "There was an issue deleting the category.", "error");
+                error: function(xhr) {
+                    console.error("Error deleting category:", xhr);
+                    let errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : "An error occurred while deleting the category.";
+                    tosterAlert("error", errorMessage);
                 }
             });
-        }
-
-        // Confirmation for deletion
-        window.confirmation = function(ev) {
-            ev.preventDefault();
-            var categoryId = ev.currentTarget.getAttribute('data-id');
-
-            // SweetAlert confirmation
-            swal({
-                title: "Are you sure you want to delete this?",
-                text: "Once deleted, this category cannot be recovered.",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
-                    deleteCategory(categoryId);
-                }
-            });
-        };
+        });
     });
 </script>

@@ -112,7 +112,7 @@
                     </nav>
 
                     <!-- Add Modal -->
-                    <div class="modal fade" id="categoryAddModal" tabindex="-1" role="dialog" aria-labelledby="categoryAddModalTitle" aria-hidden="true">
+                    <div class="modal fade" id="categoryAddModal11" tabindex="-1" role="dialog" aria-labelledby="categoryAddModalTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -122,7 +122,7 @@
                             </button>
                             </div>
                             <div class="modal-body">
-                                <form id="edit-category-form">
+                                <form id="edit-category-form1">
                                     <label for="category_name">Category Name</label>
                                     <input name="category_name" id="add-category_name" value="" class="form-control">
                                     <input type="hidden" name="category_id" id="category_id">
@@ -136,30 +136,8 @@
                         </div>
                     </div>
 
-                    <!-- Edit Modal -->
-                    <div class="modal fade" id="categoryEditModal" tabindex="-1" role="dialog" aria-labelledby="categoryEditModalTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Update Category</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="edit-category-form">
-                                    <label for="category_name">Category Name</label>
-                                    <input name="category_name" id="category_name" value="" class="form-control">
-                                    <input type="hidden" name="category_id" id="category_id">
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="save-category-btn">Save changes</button>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
+                    {{-- toster messages --}}
+
 
                 <div>
             </div>
@@ -194,7 +172,7 @@
                     page: page
                 },
                 success: function(data) {
-                    let tableBody = $('#categoryTable tbody');
+                    let tableBody = $('#categoryTable tbody1');
                     tableBody.empty();
 
                     // Loop through the data and generate table rows
@@ -259,12 +237,12 @@
 
 
         // add category
-        $('#save-add-category-btn').on('click', function() {
+        $('#save-add-category-btn2').on('click', function() {
             let categoryName = $('#add-category_name').val();
 
             // Send AJAX request to add the category
             $.ajax({
-                url: '/admin/category',
+                url: '/admin/category2222',
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}', // Include CSRF token
@@ -275,8 +253,8 @@
                     swal("Category added successfully!", {
                         icon: "success",
                     }).then(() => {
-                        $('#add-category_name').val('');
-                        $('#categoryAddModal .close').trigger('click');
+                        $('#add-category_name2').val('');
+                        $('#categoryAddModal2 .close').trigger('click');
 
                         fetchCategories();
                     });
