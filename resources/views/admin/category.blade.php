@@ -79,6 +79,9 @@
                                             Category Name
                                         </th>
                                         <th scope="col" class="px-6 py-3">
+                                            Created By
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
                                             Action
                                         </th>
                                     </tr>
@@ -307,6 +310,9 @@
                             </th>
                             <td class="px-6 py-4">
                                 ${category.name}
+                            </td>
+                            <td class="px-6 py-4">
+                                ${category.created_by}
                             </td>
                             <td class="px-6 py-4">
                                 <button class="edit-btn font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2" onclick="toggleModal('#category-edit-modal-toggle-btn')" data-id="${category.id}">Edit</button>
