@@ -306,7 +306,7 @@
                                 ${category.id}
                             </th>
                             <td class="px-6 py-4">
-                                ${category.category_name}
+                                ${category.name}
                             </td>
                             <td class="px-6 py-4">
                                 <button class="edit-btn font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2" onclick="toggleModal('#category-edit-modal-toggle-btn')" data-id="${category.id}">Edit</button>
@@ -386,7 +386,7 @@
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}', // Include CSRF token
-                    category_name: categoryName
+                    name: categoryName
                 },
                 success: function(response) {
                     tosterAlert("success",response.message);
@@ -424,7 +424,7 @@
                 type: 'GET',
                 success: function(data) {
                     // Populate modal form fields with category data
-                    $('#edit_category_name').val(data.category_name);
+                    $('#edit_category_name').val(data.name);
                     $('#category_id').val(data.id);
 
                     // $('#category-edit-modal-toggle-btn').trigger('click');
@@ -455,7 +455,7 @@
                 type: 'PATCH',
                 data: {
                     _token: '{{ csrf_token() }}',
-                    category_name: categoryName
+                    name: categoryName
                 },
                 success: function(response) {
                     tosterAlert("success",response.message);

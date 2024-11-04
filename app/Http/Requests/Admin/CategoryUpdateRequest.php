@@ -22,7 +22,7 @@ class CategoryUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
         ];
     }
 

@@ -29,12 +29,12 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
         ]);
 
         try {
             $category = new Category();
-            $category->category_name = $request->category_name;
+            $category->name = $request->name;
             $category->save();
             toastr()->closeButton()->success('Category Added Successfully.');
 
@@ -64,7 +64,7 @@ class AdminController extends Controller
 
     public function update(Request $request, $id) {
         $category = Category::find($id);
-        $category->category_name = $request->category_name;
+        $category->name = $request->name;
         $category->save();
         toastr()->closeButton()->success('Category Updated Successfully.');
 

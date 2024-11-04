@@ -13,7 +13,7 @@ class CategoryHandler
 
         try {
             return Category::when($search, function($query) use ($search) {
-                return $query->where('category_name', 'LIKE', '%' . $search . '%');
+                return $query->where('name', 'LIKE', '%' . $search . '%');
             })->paginate(7);
         } catch (Exception $e) {
             throw new Exception('Error fetching categories: ' . $e->getMessage());
@@ -24,7 +24,8 @@ class CategoryHandler
     {
         try {
             $category = new Category();
-            $category->category_name = $data['category_name'];
+            $category->name = $data['name'];
+            $category->created_by = auth()->id();
             $category->save();
         } catch (Exception $e) {
             throw new Exception('Error adding category: ' . $e->getMessage());
@@ -50,7 +51,7 @@ class CategoryHandler
     {
         try {
             $category = Category::findOrFail($id);
-            $category->category_name = $data['category_name'];
+            $category->name = $data['name'];
             $category->save();
         } catch (Exception $e) {
             throw new Exception('Error updating category: ' . $e->getMessage());
