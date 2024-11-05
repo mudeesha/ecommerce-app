@@ -27,19 +27,23 @@ route::get('admin/dashboard', [HomeController::class, 'index'])->middleware(['au
 
 
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-//admin.category
-    Route::get('category/view', [AdminCategoryController::class, 'returnView'])->middleware(['auth','admin']);
-    Route::get('category', [AdminCategoryController::class, 'index'])->name('categories.index')->middleware(['auth','admin']);
-    Route::post('category', [AdminCategoryController::class, 'store'])->name('add_category')->middleware(['auth', 'admin']);
-    route::delete('category/{id}', [AdminCategoryController::class, 'destroy'])->middleware(['auth','admin']);
-    Route::get('/category/{id}', [AdminCategoryController::class, 'show'])->middleware(['auth','admin']);;
-    Route::patch('/category/{id}', [AdminCategoryController::class, 'update'])->middleware(['auth','admin']);
+    // Category Routes
+    Route::prefix('category')->group(function () {
+        Route::get('view', [AdminCategoryController::class, 'returnView']);
+        Route::get('/', [AdminCategoryController::class, 'index'])->name('categories.index');
+        Route::post('/', [AdminCategoryController::class, 'store'])->name('add_category');
+        Route::delete('{id}', [AdminCategoryController::class, 'destroy']);
+        Route::get('{id}', [AdminCategoryController::class, 'show']);
+        Route::patch('{id}', [AdminCategoryController::class, 'update']);
+    });
 
-//product
-    Route::get('product/view', [AdminProductController::class, 'returnView'])->middleware(['auth','admin']);
-    Route::get('product', [AdminProductController::class, 'index'])->name('products.index')->middleware(['auth','admin']);
-    Route::post('product', [AdminProductController::class, 'store'])->name('add_product')->middleware(['auth', 'admin']);
-    route::delete('product/{id}', [AdminProductController::class, 'destroy'])->middleware(['auth','admin']);
-    Route::get('product/{id}', [AdminProductController::class, 'show'])->middleware(['auth','admin']);;
-    Route::patch('product/{id}', [AdminProductController::class, 'update'])->middleware(['auth','admin']);
+    // Product Routes
+    Route::prefix('product')->group(function () {
+        Route::get('view', [AdminProductController::class, 'returnView']);
+        Route::get('/', [AdminProductController::class, 'index'])->name('products.index');
+        Route::post('/', [AdminProductController::class, 'store'])->name('add_product');
+        Route::delete('{id}', [AdminProductController::class, 'destroy']);
+        Route::get('{id}', [AdminProductController::class, 'show']);
+        Route::patch('{id}', [AdminProductController::class, 'update']);
+    });
 });

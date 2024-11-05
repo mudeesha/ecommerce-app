@@ -220,149 +220,6 @@
 
 <script type="text/javascript">
 
-    // Validation function
-    function validateForm(form) {
-        console.log(form);
-
-        let isValid = true;
-
-        form.find("input").each(function() {
-            const validateType = $(this).attr("validate_type");
-            console.log(validateType);
-            const limit = parseInt($(this).attr("limit"), 10);
-            const isRequired = $(this).attr("is_required") === "true";
-            const value = $(this).val().trim();
-            const errorSpan = $(this).next("span");
-
-            // Clear previous error messages
-            errorSpan.addClass("hidden").text("");
-
-            // Required field check
-            if (isRequired && value === "") {
-                errorSpan.removeClass("hidden").text("This field is required.");
-                isValid = false;
-                return false; // Exit early for this field
-            }
-
-            // Length limit check
-            if (value.length > limit) {
-                errorSpan.removeClass("hidden").text(`Exceeds maximum length of ${limit} characters.`);
-                isValid = false;
-                return false;
-            }
-
-            // Type-specific validation
-            if (validateType === "email" && value !== "" && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
-                errorSpan.removeClass("hidden").text("Invalid email format.");
-                isValid = false;
-                return false;
-            } else if (validateType === "digits" && value !== "" && !/^\d+$/.test(value)) {
-                errorSpan.removeClass("hidden").text("Digits only allowed.");
-                isValid = false;
-                return false;
-            } else if (validateType === "float" && value !== "" && !/^\d+(\.\d+)?$/.test(value)) {
-                errorSpan.removeClass("hidden").text("Float numbers only.");
-                isValid = false;
-                return false;
-            } else if (validateType === "text" && value !== "" && !/^[a-zA-Z\s]+$/.test(value)) {
-                errorSpan.removeClass("hidden").text("Text only (letters and spaces allowed).");
-                isValid = false;
-                return false;
-            }
-        });
-
-        return isValid;
-    }
-
-    function tosterAlert(status, message) {
-        var successToast = $("#toast-success");
-        var errorToast = $("#toast-warning");
-
-        if (status === "success") {
-            successToast.find(".description").text(message);
-            successToast.removeClass("hidden").fadeIn().delay(3000).fadeOut();
-        } else if (status === "error") {
-            errorToast.find(".description").text(message);
-            errorToast.removeClass("hidden").fadeIn().delay(3000).fadeOut();
-        }
-    }
-
-    // Fetch data function with pagination
-    function fetchCategories(searchKeyword = '', page = 1) {
-        $.ajax({
-            url: '/admin/category',
-            type: 'GET',
-            data: {
-                search: searchKeyword,
-                page: page
-            },
-            success: function(data) {
-                let tableBody = $('#categoryTable tbody');
-                tableBody.empty();
-
-                // Loop through the data and generate table rows
-                data.data.forEach(function(category) {
-                    let row = `
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                ${category.id}
-                            </th>
-                            <td class="px-6 py-4">
-                                ${category.name}
-                            </td>
-                            <td class="px-6 py-4">
-                                ${category.created_by}
-                            </td>
-                            <td class="px-6 py-4">
-                                <button class="edit-btn font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2" onclick="toggleModal('#category-edit-modal-toggle-btn')" data-id="${category.id}">Edit</button>
-                                <button class="delete-btn font-medium text-red-600 dark:text-red-500 hover:underline" onclick="toggleModal('#category-delete-modal-toggle-btn')"  data-id="${category.id}">Delete</button>
-                            </td>
-                        </tr>
-                    `;
-                    tableBody.append(row);
-                });
-
-                // Generate pagination links
-                generatePagination(data);
-            },
-            error: function(err) {
-                console.error('Error fetching categories:', err);
-            }
-        });
-    }
-
-    //pagination
-    function generatePagination(data) {
-        let pagination = $('#pagination');
-        pagination.empty(); // Clear the existing pagination
-
-        let currentPage = data.current_page;
-        let lastPage = data.last_page;
-
-        // Previous button
-        if (currentPage > 1) {
-            pagination.append(`<li><a class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" href="#" onclick="fetchCategories('', ${currentPage - 1})">Previous</a></li>`);
-        }
-
-        // Page numbers
-        for (let i = 1; i <= lastPage; i++) {
-            let activeClass = (i === currentPage)
-                ? 'active bg-gray-500 text-white' // No border class for active link
-                : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white';
-            pagination.append(`<li><a class="flex items-center justify-center px-3 h-8 leading-tight ${activeClass}" href="#" onclick="fetchCategories('', ${i})">${i}</a></li>`);
-}
-        // Next button
-        if (currentPage < lastPage) {
-            pagination.append(`<li><a class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" href="#" onclick="fetchCategories('', ${currentPage + 1})">Next</a></li>`);
-        }
-    }
-
-    //Toggal modal
-    function toggleModal(btn_id){
-        $(btn_id).trigger('click');
-    }
-
     $(document).ready(function() {
         // Fetch data when the page loads
         fetchCategories();
@@ -512,4 +369,147 @@
             });
         });
     });
+
+    // Validation function
+    function validateForm(form) {
+        console.log(form);
+
+        let isValid = true;
+
+        form.find("input").each(function() {
+            const validateType = $(this).attr("validate_type");
+            console.log(validateType);
+            const limit = parseInt($(this).attr("limit"), 10);
+            const isRequired = $(this).attr("is_required") === "true";
+            const value = $(this).val().trim();
+            const errorSpan = $(this).next("span");
+
+            // Clear previous error messages
+            errorSpan.addClass("hidden").text("");
+
+            // Required field check
+            if (isRequired && value === "") {
+                errorSpan.removeClass("hidden").text("This field is required.");
+                isValid = false;
+                return false; // Exit early for this field
+            }
+
+            // Length limit check
+            if (value.length > limit) {
+                errorSpan.removeClass("hidden").text(`Exceeds maximum length of ${limit} characters.`);
+                isValid = false;
+                return false;
+            }
+
+            // Type-specific validation
+            if (validateType === "email" && value !== "" && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
+                errorSpan.removeClass("hidden").text("Invalid email format.");
+                isValid = false;
+                return false;
+            } else if (validateType === "digits" && value !== "" && !/^\d+$/.test(value)) {
+                errorSpan.removeClass("hidden").text("Digits only allowed.");
+                isValid = false;
+                return false;
+            } else if (validateType === "float" && value !== "" && !/^\d+(\.\d+)?$/.test(value)) {
+                errorSpan.removeClass("hidden").text("Float numbers only.");
+                isValid = false;
+                return false;
+            } else if (validateType === "text" && value !== "" && !/^[a-zA-Z\s]+$/.test(value)) {
+                errorSpan.removeClass("hidden").text("Text only (letters and spaces allowed).");
+                isValid = false;
+                return false;
+            }
+        });
+
+        return isValid;
+    }
+
+    function tosterAlert(status, message) {
+        var successToast = $("#toast-success");
+        var errorToast = $("#toast-warning");
+
+        if (status === "success") {
+            successToast.find(".description").text(message);
+            successToast.removeClass("hidden").fadeIn().delay(3000).fadeOut();
+        } else if (status === "error") {
+            errorToast.find(".description").text(message);
+            errorToast.removeClass("hidden").fadeIn().delay(3000).fadeOut();
+        }
+    }
+
+    // Fetch data function with pagination
+    function fetchCategories(searchKeyword = '', page = 1) {
+        $.ajax({
+            url: '/admin/category',
+            type: 'GET',
+            data: {
+                search: searchKeyword,
+                page: page
+            },
+            success: function(data) {
+                let tableBody = $('#categoryTable tbody');
+                tableBody.empty();
+
+                // Loop through the data and generate table rows
+                data.data.forEach(function(category) {
+                    let row = `
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                ${category.id}
+                            </th>
+                            <td class="px-6 py-4">
+                                ${category.name}
+                            </td>
+                            <td class="px-6 py-4">
+                                ${category.created_by}
+                            </td>
+                            <td class="px-6 py-4">
+                                <button class="edit-btn font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2" onclick="toggleModal('#category-edit-modal-toggle-btn')" data-id="${category.id}">Edit</button>
+                                <button class="delete-btn font-medium text-red-600 dark:text-red-500 hover:underline" onclick="toggleModal('#category-delete-modal-toggle-btn')"  data-id="${category.id}">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.append(row);
+                });
+
+                // Generate pagination links
+                generatePagination(data);
+            },
+            error: function(err) {
+                console.error('Error fetching categories:', err);
+            }
+        });
+    }
+
+    //pagination
+    function generatePagination(data) {
+        let pagination = $('#pagination');
+        pagination.empty(); 
+
+        let currentPage = data.current_page;
+        let lastPage = data.last_page;
+
+        // Previous button
+        if (currentPage > 1) {
+            pagination.append(`<li><a class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" href="#" onclick="fetchCategories('', ${currentPage - 1})">Previous</a></li>`);
+        }
+
+        // Page numbers
+        for (let i = 1; i <= lastPage; i++) {
+            let activeClass = (i === currentPage)
+                ? 'active bg-gray-500 text-white' // No border class for active link
+                : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white';
+            pagination.append(`<li><a class="flex items-center justify-center px-3 h-8 leading-tight ${activeClass}" href="#" onclick="fetchCategories('', ${i})">${i}</a></li>`);
+        }   
+        // Next button
+        if (currentPage < lastPage) {
+            pagination.append(`<li><a class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" href="#" onclick="fetchCategories('', ${currentPage + 1})">Next</a></li>`);
+        }
+    }
+
+    //Toggal modal
+    function toggleModal(btn_id){
+        $(btn_id).trigger('click');
+    }
 </script>
