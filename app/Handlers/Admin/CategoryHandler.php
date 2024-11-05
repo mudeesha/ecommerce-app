@@ -64,8 +64,13 @@ class CategoryHandler
     {
         try {
             $category = Category::findOrFail($id);
-            $category->name = $data['name'];
+            $originalData = $category->getOriginal();
+
+            $category->fill($data);
             $category->save();
+
+            $this->adminLogService->logAction(auth()->id(), 'update', 'categories', $category->id, 'Update a category', $originalData, $data);
+            
         } catch (Exception $e) {
             throw new Exception('Error updating category: ' . $e->getMessage());
         }
@@ -78,6 +83,8 @@ class CategoryHandler
 
             if ($category) {
                 $category->delete();
+
+                $this->adminLogService->logAction(auth()->id(), 'delete', 'categories', $category->id, 'Deleate a category');
             } else {
                 throw new Exception('Category not found.');
             }

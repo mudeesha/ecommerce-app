@@ -12,15 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('admin_logs', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('admin_id'); // Reference to the admin user who performed the action
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('admin_id');
             $table->string('action');
-            $table->string('table_name'); // Name of the affected table
-            $table->unsignedBigInteger('record_id')->nullable(); // ID of the affected record (if applicable)
-            $table->text('description')->nullable(); // Optional details about the action
+            $table->string('table_name');
+            $table->unsignedBigInteger('record_id')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
 
-            // Set up foreign key constraint to users table, if needed
             $table->foreign('admin_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

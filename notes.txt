@@ -1,0 +1,19 @@
+er diagram syntacs, add sub categories
+update route file
+migration id change to bigint
+validations
+make admin folder in controllers
+pagination function(page number)
+use handlers for business logics9
+
+
+
+
+$categories = category::when($search, function($query) use ($search) {
+    return $query->where('category_name', 'LIKE', '%' . $search . '%');
+})->paginate(7);
+
+In Laravel, the paginate() method automatically handles the offset based on the page number. For example, if the page number is 2, it retrieves the next set of 7 rows (rows 8 to 14).
+
+SQL equivalent: SELECT * FROM categories LIMIT 7 OFFSET 0; =>        fetchCategories(searchKeyword, 1);
+SQL equivalent: SELECT * FROM categories LIMIT 7 OFFSET 2; =>        fetchCategories(searchKeyword, 2);
