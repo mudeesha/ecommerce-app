@@ -9,7 +9,6 @@ class AdminLog extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'admin_id', 
-    ];
+    protected $fillable = ['admin_id', 'action', 'table_name', 'record_id', 'description'];
+
 }

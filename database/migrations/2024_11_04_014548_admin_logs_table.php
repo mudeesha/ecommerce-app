@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('admin_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('admin_id'); // Reference to the admin user who performed the action
-            $table->string('action')->nullable()->change();
+            $table->string('action');
             $table->string('table_name'); // Name of the affected table
             $table->unsignedBigInteger('record_id')->nullable(); // ID of the affected record (if applicable)
             $table->text('description')->nullable(); // Optional details about the action
