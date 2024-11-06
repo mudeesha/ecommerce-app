@@ -22,12 +22,18 @@ class ProductAddRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|string',
-            'price' => 'nullable|numeric',
-            'category' => 'nullable|string',
-            'quantity' => 'nullable|integer',
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric|min:0',
+            'discount_price' => 'nullable|numeric|min:0|lt:price',
+            'stock_quantity' => 'nullable|integer|min:0',
+            'is_active' => 'nullable|boolean',
+            'main_image_url' => 'nullable|url',
+            'rating' => 'nullable|numeric|min:0|max:5',
+            'num_reviews' => 'nullable|integer|min:0',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500'
         ];
     }
 }

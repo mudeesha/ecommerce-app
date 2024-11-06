@@ -70,7 +70,7 @@ class CategoryHandler
             $category->save();
 
             $this->adminLogService->logAction(auth()->id(), 'update', 'categories', $category->id, 'Update a category', $originalData, $data);
-            
+
         } catch (Exception $e) {
             throw new Exception('Error updating category: ' . $e->getMessage());
         }
