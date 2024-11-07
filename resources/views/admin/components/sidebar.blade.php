@@ -26,8 +26,8 @@
                 </button>
                 <ul id="ecommerce-dropdown" class="pl-8 mt-1 hidden">
                     <li><a href="{{url('admin/category/view')}}" class="block p-2 hover:bg-gray-700 rounded-lg">Category</a></li>
+                    <li><a href="{{url('admin/product/view')}}" class="block p-2 hover:bg-gray-700 rounded-lg">Products</a></li>
                     <li><a href="#" class="block p-2 hover:bg-gray-700 rounded-lg">Orders</a></li>
-                    <li><a href="#" class="block p-2 hover:bg-gray-700 rounded-lg">Products</a></li>
                     <li><a href="#" class="block p-2 hover:bg-gray-700 rounded-lg">Customers</a></li>
                 </ul>
             </li>

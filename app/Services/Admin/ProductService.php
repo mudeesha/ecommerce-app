@@ -14,28 +14,28 @@ class ProductService
         $this->productHandler = $productHandler;
     }
 
-    public function index(array $params)
+    public function fetchProducts(array $params)
     {
         return $this->productHandler->index($params);
     }
 
-    public function store(array $data)
+    public function addProduct(array $data)
     {
-        return $this->productHandler->store($data);
+        $this->productHandler->store($data);
     }
 
-    public function fetchProductById($id)
+    public function getProductById($id)
     {
         return $this->productHandler->fetchProductById($id);
     }
 
-    public function update(array $data, $id)
+    public function updateProduct(array $data, $id)
     {
-        return $this->productHandler->update($data, $id);
+        $this->productHandler->updateProduct($data, $id);
     }
 
-    public function delete($id)
+    public function deleteProduct($id)
     {
-        return $this->productHandler->delete($id);
+        $this->productHandler->deleteProduct($id);
     }
 }

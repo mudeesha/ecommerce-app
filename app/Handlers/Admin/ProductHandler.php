@@ -28,7 +28,7 @@ class ProductHandler
             })->paginate(7);
         } catch (Exception $e) {
             Log::error('Error fetching products: ' . $e->getMessage());
-            throw new Exception('Error fetching products.');
+            throw new Exception('Error fetching products: ' . $e->getMessage());
         }
     }
 
@@ -55,42 +55,55 @@ class ProductHandler
 
             } catch (Exception $e) {
                 Log::error('Error adding product: ' . $e->getMessage());
-                throw new Exception('Error adding product.');
+                throw new Exception('Error adding product: ' . $e->getMessage());
             }
     }
 
     public function fetchProductById($id)
     {
-        $product = Product::find($id);
+        try {
+            $product = Product::find($id);
 
-        if (!$product) {
-            throw new Exception('Product not found');
+            if (!$product) {
+                throw new Exception('Product not found');
+            }
+
+            return $product;
+        } catch (Exception $e) {
+            throw new Exception('Error fetching product: ' . $e->getMessage());
         }
-
-        return $product;
     }
 
     public function update(array $data, $id)
     {
-        $product = Product::find($id);
+        try {
+            $product = Product::findOrFail($id);
+            $originalData = $product->getOriginal();
 
-        if (!$product) {
-            throw new Exception('Product not found');
+            $product->fill($data);
+            $product->save();
+
+            $this->adminLogService->logAction(auth()->id(), 'update', 'products', $product->id, 'Updated a product', $originalData, $data);
+
+        } catch (Exception $e) {
+            throw new Exception('Error updating product: ' . $e->getMessage());
         }
-
-        $product->update($data);
-
-        return $product;
     }
 
     public function delete($id)
     {
-        $product = Product::find($id);
+        try {
+            $product = Product::find($id);
 
-        if (!$product) {
-            throw new Exception('Product not found');
+            if ($product) {
+                $product->delete();
+
+                $this->adminLogService->logAction(auth()->id(), 'delete', 'products', $product->id, 'Deleted a product');
+            } else {
+                throw new Exception('Product not found.');
+            }
+        } catch (Exception $e) {
+            throw new Exception('Error deleting product: ' . $e->getMessage());
         }
-
-        $product->delete();
     }
 }

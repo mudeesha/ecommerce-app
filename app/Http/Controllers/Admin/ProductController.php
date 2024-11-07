@@ -28,9 +28,10 @@ class ProductController extends Controller
     public function index(ProductFetchRequest $request): JsonResponse
     {
         try {
-            $products = $this->productService->index($request->validated());
+            $products = $this->productService->fetchProducts($request->validated());
             return response()->json($products);
         } catch (Exception $e) {
+            \Log::error('Error fetching products: ' . $e->getMessage());
             return response()->json(['error' => 'An error occurred while fetching products.'], 500);
         }
     }
@@ -38,40 +39,44 @@ class ProductController extends Controller
     public function store(ProductAddRequest $request): JsonResponse
     {
         try {
-            $product = $this->productService->store($request->validated());
-            return response()->json(['message' => 'Product added successfully', 'product' => $product], 201);
+            $this->productService->addProduct($request->validated());
+            return response()->json(['message' => 'Product added successfully'], 201);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Failed to add product.'], 500);
+            \Log::error('Error adding product: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to add product'], 500);
         }
     }
 
     public function show(ProductShowRequest $request, $id): JsonResponse
     {
         try {
-            $product = $this->productService->fetchProductById($id);
+            $product = $this->productService->getProductById($id);
             return response()->json($product);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Failed to fetch product.'], 500);
+            \Log::error('Error fetching product: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while fetching the product.'], 500);
         }
     }
 
     public function update(ProductUpdateRequest $request, $id): JsonResponse
     {
         try {
-            $product = $this->productService->update($request->validated(), $id);
-            return response()->json(['message' => 'Product updated successfully', 'product' => $product]);
+            $this->productService->updateProduct($request->validated(), $id);
+            return response()->json(['message' => 'Product updated successfully']);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Failed to update product.'], 500);
+            \Log::error('Error updating product: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to update product'], 500);
         }
     }
 
     public function destroy(ProductDeleteRequest $request, $id): JsonResponse
     {
         try {
-            $this->productService->delete($id);
-            return response()->json(['message' => 'Product deleted successfully.']);
+            $this->productService->deleteProduct($id);
+            return response()->json(['message' => 'Product deleted successfully']);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Failed to delete product.'], 404);
+            \Log::error('Error deleting product: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 404);
         }
     }
 }
