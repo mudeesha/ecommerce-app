@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\AdminLog;
 use App\Services\Admin\AdminLogService;
 
+
 use Exception;
 
 class CategoryHandler
@@ -20,11 +21,18 @@ class CategoryHandler
     public function index(array $params)
     {
         $search = $params['search'] ?? null;
+        $all = $params['all'] ?? false;
 
         try {
+            if ($all) {
+                $categories = Category::select('id', 'name')->get();
+                return $categories;
+            }
+
             return Category::when($search, function($query) use ($search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             })->paginate(7);
+
         } catch (Exception $e) {
             throw new Exception('Error fetching categories: ' . $e->getMessage());
         }

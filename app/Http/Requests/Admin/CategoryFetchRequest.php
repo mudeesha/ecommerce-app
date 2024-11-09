@@ -23,6 +23,7 @@ class CategoryFetchRequest extends FormRequest
     {
         return [
            'search' => 'nullable|string|max:255',
+           'all' => 'nullable|string',
         ];
     }
 }

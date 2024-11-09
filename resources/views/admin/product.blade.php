@@ -64,7 +64,7 @@
                                 </div>
 
                                 <!-- Add button -->
-                                <button data-modal-target="category-add-modal" data-modal-toggle="category-add-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" onclick="document.querySelector('.category-modal-des').textContent = 'Add a Category'">
+                                <button data-modal-target="product-add-modal" data-modal-toggle="product-add-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" onclick="loadCategories()">
                                     Add a Category
                                 </button>
                             </div>
@@ -132,17 +132,17 @@
                     {{-- </div> --}}
                 </div>
 
-                <!-- Add modal -->
-                <div id="category-add-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <!-- Add Product Modal -->
+                <div id="product-add-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                     <div class="relative p-4 w-full max-w-md max-h-full">
                         <!-- Modal content -->
                         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                             <!-- Modal header -->
                             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white category-modal-des">
-                                    Add a Category
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white product-modal-des">
+                                    Add a Product
                                 </h3>
-                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white close-btn" data-modal-toggle="category-add-modal" onclick="$('#add-category-form').find('input').each(function() { $(this).css('border', ''); $(this).next('span').addClass('hidden').text(''); });">
+                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white close-btn" data-modal-toggle="product-add-modal" onclick="$('#add-product-form').find('input, textarea').each(function() { $(this).css('border', ''); $(this).next('span').addClass('hidden').text(''); });">
                                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                                     </svg>
@@ -150,21 +150,91 @@
                                 </button>
                             </div>
                             <!-- Modal body -->
-                            <form id="add-category-form" class="p-4 md:p-5 add-category-form" novalidate>
+                            <form id="add-product-form" class="p-4 md:p-5 add-product-form" enctype="multipart/form-data" novalidate>
                                 <div class="grid gap-4 mb-4 grid-cols-2">
+                                    <!-- Product Name -->
                                     <div class="col-span-2">
-                                        <label for="add_category_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                        <input type="text" validate_type="" limit="255" is_required="true" name="add_category_name" id="add_category_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="Type product name" required="">
+                                        <label for="product_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Name</label>
+                                        <input type="text" validate_type="" limit="255" is_required="true" name="name" id="product_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
+                                        <span class="hidden mt-2 text-sm text-red-600 dark:text-red-500">//append here</span>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <div class="col-span-2">
+                                        <label for="product_description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                                        <textarea name="description" id="product_description" validate_type="" limit="255" is_required="true" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product description"></textarea>
+                                        <span class="hidden mt-2 text-sm text-red-600 dark:text-red-500">//append here</span>
+                                    </div>
+
+                                    <!-- Category -->
+                                    <div class="col-span-2">
+                                        <label for="product_category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                                        <select name="category_id" id="product_category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <!-- Add categories here -->
+                                        </select>
+                                        <span class="hidden mt-2 text-sm text-red-600 dark:text-red-500">//append here</span>
+                                    </div>
+
+                                    <!-- Price -->
+                                    <div>
+                                        <label for="product_price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
+                                        <input type="number" validate_type="float" limit="" is_required="true" step="0.01" name="price" id="product_price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="0.00" required="">
+                                        <span class="hidden mt-2 text-sm text-red-600 dark:text-red-500">//append here</span>
+                                    </div>
+
+                                    <!-- Discount Price -->
+                                    <div>
+                                        <label for="product_discount_price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Discount Price</label>
+                                        <input type="number" validate_type="float" limit="" is_required="false" step="0.01" name="discount_price" id="product_discount_price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="0.00">
+                                        <span class="hidden mt-2 text-sm text-red-600 dark:text-red-500">//append here</span>
+                                    </div>
+
+                                    <!-- Quantity -->
+                                    <div>
+                                        <label for="product_quantity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantity</label>
+                                        <input type="number" validate_type="digits" limit="" is_required="true" name="quantity" id="product_quantity" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Enter stock quantity">
+                                        <span class="hidden mt-2 text-sm text-red-600 dark:text-red-500">//append here</span>
+                                    </div>
+
+                                    <!-- Is Active -->
+                                    <div>
+                                        <label for="product_is_active" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Is Active</label>
+                                        <select name="is_active" id="product_is_active" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <option value="1" selected>Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                        <span class="hidden mt-2 text-sm text-red-600 dark:text-red-500">//append here</span>
+                                    </div>
+
+                                    <!-- Main Image -->
+                                    <div class="col-span-2">
+                                        <label for="product_image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Main Image</label>
+                                        <input type="file" name="main_image_url" id="product_image" validate_type="" limit="255" is_required="false" accept="image/*" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <span class="hidden mt-2 text-sm text-red-600 dark:text-red-500">//append here</span>
+                                    </div>
+
+                                    <!-- Meta Title -->
+                                    <div class="col-span-2">
+                                        <label for="product_meta_title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Meta Title</label>
+                                        <input type="text" validate_type="" limit="255" is_required="true" name="meta_title" id="product_meta_title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type meta title">
+                                        <span class="hidden mt-2 text-sm text-red-600 dark:text-red-500">//append here</span>
+                                    </div>
+
+                                    <!-- Meta Description -->
+                                    <div class="col-span-2">
+                                        <label for="product_meta_description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Meta Description</label>
+                                        <textarea name="meta_description" id="product_meta_description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type meta description"></textarea>
                                         <span class="hidden mt-2 text-sm text-red-600 dark:text-red-500">//append here</span>
                                     </div>
                                 </div>
-                                <button id="add-category-btn" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Save
-                                </button>
+
+                                <!-- Submit Button -->
+                                <button id="add-product-btn" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Product</button>
                             </form>
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Edit modal -->
                 <button id="category-edit-modal-toggle-btn" data-modal-target="category-edit-modal" data-modal-toggle="category-edit-modal" class="hidden block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"></button>
@@ -260,36 +330,41 @@
             fetchCategories(searchKeyword); // Fetch categories based on the search keyword
         });
 
-        // add category
-        $('#add-category-btn').on('click', function(event) {
+        // Add Product
+        $('#add-product-btn').on('click', function(event) {
             event.preventDefault();
 
             // Validate data
-            const form = $('#add-category-form');
+            const form = $('#add-product-form');
             const validation = validateForm(form);
             if (!validation) {
-                return; // Stop if validation fails
+                return;
             }
+            console.log("validation: true");
 
-            let categoryName = $('#add_category_name').val();
 
-            // Send AJAX request to add the category
+            // Gather form data
+            let formData = new FormData(form[0]);
+            // for (let [key, value] of formData.entries()) {
+            //     console.log(`${key}: ${value}`);
+            // }
+            formData.append('_token', '{{ csrf_token() }}'); // Include CSRF token
+
             $.ajax({
-                url: '/admin/category',
+                url: '/admin/product',
                 type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}', // Include CSRF token
-                    name: categoryName
-                },
+                data: formData,
+                processData: false,
+                contentType: false,
                 success: function(response) {
-                    tosterAlert("success",response.message);
-                    $('#category-add-modal .close-btn').trigger('click');
-                    form.find('input').val('');
-                    form.find("input").next("span").addClass("hidden").text("");
+                    tosterAlert("success", response.message);
+                    $('#product-add-modal .close-btn').trigger('click');
+                    form[0].reset();
+                    form.find("input, textarea").next("span").addClass("hidden").text("");
                     fetchCategories();
                 },
                 error: function(xhr) {
-                    // validation errors returned by laravel
+                    // Handle validation errors returned by Laravel
                     if (xhr.status === 422) {
                         const errors = xhr.responseJSON.errors;
                         for (const key in errors) {
@@ -298,7 +373,7 @@
                             }
                         }
                     } else {
-                        console.error('Error adding category:', xhr);
+                        console.error('Error adding product:', xhr);
                         tosterAlert("error", "An unexpected error occurred.");
                     }
                 }
@@ -571,5 +646,33 @@
     //Toggal modal
     function toggleModal(btn_id){
         $(btn_id).trigger('click');
+    }
+
+    // Load categories and populate dropdown
+    function loadCategories() {
+        $.ajax({
+            url: '/admin/category',
+            type: 'GET',
+            data: { all: 'true' },
+            success: function(response) {
+                console.log("res: ", response);
+
+                const categoryDropdown = $('#product_category');
+                categoryDropdown.empty();
+
+                if (response && Array.isArray(response)) {
+                    response.forEach(function(category) {
+                        categoryDropdown.append(new Option(category.name, category.id));
+                    });
+                } else {
+                    console.error("No categories found in response data.");
+                    tosterAlert("error", "Failed to load categories.");
+                }
+            },
+            error: function(xhr) {
+                console.error('Error loading categories:', xhr);
+                tosterAlert("error", "Failed to load categories.");
+            }
+        });
     }
 </script>

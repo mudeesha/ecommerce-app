@@ -29,9 +29,7 @@ class ProductAddRequest extends FormRequest
             'discount_price' => 'nullable|numeric|min:0|lt:price',
             'stock_quantity' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
-            'main_image_url' => 'nullable|url',
-            'rating' => 'nullable|numeric|min:0|max:5',
-            'num_reviews' => 'nullable|integer|min:0',
+            'main_image_url' => 'nullable|string',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500'
         ];
