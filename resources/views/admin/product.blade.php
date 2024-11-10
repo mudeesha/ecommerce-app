@@ -557,6 +557,7 @@
 
                 // Loop through the data and generate table rows
                 data.data.forEach(function(product) {
+                    let imageUrl = product.main_image_url ? `/storage/${product.main_image_url}` : '/images/placeholder.png'; // Use a placeholder if no image
                     let row = `
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
@@ -584,13 +585,13 @@
                             <td class="px-6 py-4">
                                 ${product.is_active}
                             </td>
-                            <td class="px-6 py-4">
-                                ${product.main_image_url}
+                            <td class="p-4">
+                                <img src="${imageUrl}" alt="${product.name}" class="w-16 md:w-32 max-w-full max-h-full">
                             </td>
                             <td class="px-6 py-4">
                                 ${product.rating}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-16 py-4">
                                 ${product.num_reviews}
                             </td>
                             <td class="px-6 py-4">

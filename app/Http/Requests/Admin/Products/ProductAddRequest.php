@@ -29,7 +29,7 @@ class ProductAddRequest extends FormRequest
             'discount_price' => 'nullable|numeric|min:0|lt:price',
             'stock_quantity' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
-            'main_image_url' => 'nullable|string',
+            'main_image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500'
         ];

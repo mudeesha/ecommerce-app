@@ -21,7 +21,14 @@ class ProductService
 
     public function addProduct(array $data)
     {
+        // Check if there is an image file in the data
+        if (isset($data['main_image_url']) && $data['main_image_url'] instanceof \Illuminate\Http\UploadedFile) {
+            $imagePath = $data['main_image_url']->store('admin/product_images', 'public');
+            $data['main_image_url'] = $imagePath; // Store the path to be saved in the database
+        }
+
         $this->productHandler->store($data);
+
     }
 
     public function getProductById($id)
