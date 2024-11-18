@@ -46,7 +46,7 @@
                 Register
               </span>
             </a>
-            <a href="">
+            <a href="{{url('/cart')}}">
               <i class="fa fa-shopping-bag" aria-hidden="true"></i>
             </a>
             <form class="form-inline ">

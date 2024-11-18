@@ -160,11 +160,12 @@ $(document).ready(function () {
 
         let cartHTML = '';
         items.forEach(item => {
+            let imageUrl = item.product.main_image_url ? `/storage/${item.product.main_image_url}` : '/images/placeholder.png';
             cartHTML += `
             <div class="card mb-3">
                 <div class="card-body cart-item d-flex align-items-center">
                     <input type="checkbox" class="form-check-input me-3" data-cart-id="${item.id}">
-                    <img src="" alt="Product" class="rounded" width="80">
+                    <img src="${imageUrl}" alt="Product" class="rounded" width="80">
                     <div class="ms-3">
                         <h6 class="mb-0">${item.product.name}</h6>
                         <small class="text-muted">${item.shop_name}</small>

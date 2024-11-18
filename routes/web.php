@@ -15,11 +15,11 @@ Route::prefix('home')->group(function () {
 });
 
 Route::prefix('cart')->middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', [CartController::class, 'index'])->name('cart.index'); // Load cart page
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
     Route::post('/add',[CartController::class, 'store']);
-    Route::get('/items', [CartController::class, 'fetch'])->name('cart.items'); // Fetch cart items via AJAX
-    Route::post('/update', [CartController::class, 'update'])->name('cart.update'); // Update cart item
-    Route::post('/remove', [CartController::class, 'remove'])->name('cart.remove'); // Remove cart item
+    Route::get('/items', [CartController::class, 'fetch'])->name('cart.items');
+    Route::post('/update', [CartController::class, 'update'])->name('cart.update');
+    Route::post('/remove', [CartController::class, 'remove'])->name('cart.remove');
 
 });
 
