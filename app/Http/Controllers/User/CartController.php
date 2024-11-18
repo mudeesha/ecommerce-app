@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use Illuminate\Http\Request;
 use App\Http\Requests\User\Cart\CartAddRequest;
+use App\Http\Requests\User\Cart\CartUpdateRequest;
+use App\Http\Requests\User\Cart\CartRemoveRequest;
 use App\Services\User\CartService;
 use Illuminate\Http\JsonResponse;
 
@@ -18,25 +20,19 @@ class CartController extends Controller
     {
         $this->cartService = $cartService;
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
+        $cartDetails = $this->cartService->getCartDetails();
+        return view('cart.cart');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function fetch()
     {
-        //
+        $cartDetails = $this->cartService->getCartDetails();
+        return response()->json(['status' => true, 'data' => $cartDetails]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(CartAddRequest $request): JsonResponse
     {
         try {
@@ -48,35 +44,15 @@ class CartController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Cart $cart)
+    public function update(CartUpdateRequest $request)
     {
-        //
+        $response = $this->cartService->updateCartItem($request->validated());
+        return response()->json($response);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Cart $cart)
+    public function remove(CartRemoveRequest $request)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Cart $cart)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Cart $cart)
-    {
-        //
+        $response = $this->cartService->removeCartItem($request->validated());
+        return response()->json($response);
     }
 }

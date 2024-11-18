@@ -7,35 +7,33 @@ use Exception;
 
 class CartService
 {
-    protected $carttHandler;
+    protected $cartHandler;
 
-    public function __construct(CartHandler $carttHandler)
+    public function __construct(CartHandler $cartHandler)
     {
-        $this->carttHandler = $carttHandler;
+        $this->cartHandler = $cartHandler;
     }
 
     public function addCart(array $data)
     {
-        $this->carttHandler->add($data);
+        $this->cartHandler->add($data);
     }
 
-    // public function fetchProducts(array $params)
-    // {
-    //     return $this->productHandler->index($params);
-    // }
+    // Fetch cart details
+    public function getCartDetails()
+    {
+        return $this->cartHandler->fetchCartDetails();
+    }
 
-    // public function getProductById($id)
-    // {
-    //     return $this->productHandler->fetchProductById($id);
-    // }
+    // Update cart item
+    public function updateCartItem($data)
+    {
+        return $this->cartHandler->updateCartItem($data);
+    }
 
-    // public function updateProduct(array $data, $id)
-    // {
-    //     $this->productHandler->updateProduct($data, $id);
-    // }
-
-    // public function deleteProduct($id)
-    // {
-    //     $this->productHandler->deleteProduct($id);
-    // }
+    // Remove cart item
+    public function removeCartItem($data)
+    {
+        return $this->cartHandler->removeCartItem($data);
+    }
 }

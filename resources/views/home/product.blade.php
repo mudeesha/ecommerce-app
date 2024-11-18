@@ -52,11 +52,11 @@
                                 </div>
                                 <h6 class="mt-4">Quantity:</h6>
                                 <div class="d-flex align-items-center mt-2">
-                                    <button class="btn btn-outline-secondary btn-sm">-</button>
-                                    <span class="mx-3">1</span>
-                                    <button class="btn btn-outline-secondary btn-sm">+</button>
+                                    <button class="btn btn-outline-secondary btn-sm quantity-decrease" id="quantity-decrease">-</button>
+                                    <span class="mx-3" id="quantity-display">1</span>
+                                    <button class="btn btn-outline-secondary btn-sm quantity-increase" id="quantity-increase">+</button>
                                 </div>
-                                <p class="small text-muted mt-2 stock">326 available</p>
+                                <p class="small text-muted mt-2 stock"></p>
                             </div>
 
                             <!--Seller Info and Add to Cart -->
@@ -106,7 +106,7 @@
 
             // Make the AJAX call
             $.ajax({
-                url: `home/product/${productId}`, // Route to fetch product details
+                url: `/home/product/${productId}`, // Route to fetch product details
                 type: 'GET',
                 success: function (response) {
                     let imageUrl = response.main_image_url ? `/storage/${response.main_image_url}` : '/images/placeholder.png';
@@ -133,11 +133,29 @@
             });
         });
 
+
+        //Add to cart--------------------------------------------------------------------------------------------------------------------------
+        // Default quantity
+        let quantity = 1;
+
+        // Handle quantity increase
+        $(document).on('click', '#quantity-increase', function () {
+            quantity++;
+            $('#quantity-display').text(quantity);
+        });
+
+        // Handle quantity decrease
+        $(document).on('click', '#quantity-decrease', function () {
+            if (quantity > 1) {
+                quantity--;
+                $('#quantity-display').text(quantity);
+            }
+        });
+
         $(document).on('click', '.add-to-cart-btn', function () {
             let productId = $(this).attr('data-id');
             console.log(productId);
-
-            let quantity = 1; // Default quantity
+            console.log(quantity);
 
             $.ajax({
                 url: '/cart/add',

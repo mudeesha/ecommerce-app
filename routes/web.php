@@ -15,9 +15,12 @@ Route::prefix('home')->group(function () {
 });
 
 Route::prefix('cart')->middleware(['auth', 'verified'])->group(function () {
-    route::post('/add',[CartController::class, 'store']);
-    // Route::get('/product', [cartController::class, 'index']);
-    // Route::get('/product/{id}', [cartController::class, 'showProduct']);
+    Route::get('/', [CartController::class, 'index'])->name('cart.index'); // Load cart page
+    Route::post('/add',[CartController::class, 'store']);
+    Route::get('/items', [CartController::class, 'fetch'])->name('cart.items'); // Fetch cart items via AJAX
+    Route::post('/update', [CartController::class, 'update'])->name('cart.update'); // Update cart item
+    Route::post('/remove', [CartController::class, 'remove'])->name('cart.remove'); // Remove cart item
+
 });
 
 Route::get('/dashboard', function () {
@@ -57,4 +60,9 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::get('{id}', [AdminProductController::class, 'show']);
         Route::patch('{id}', [AdminProductController::class, 'update']);
     });
+});
+
+
+Route::get('/abc', function () {
+    return view('cart/index');
 });

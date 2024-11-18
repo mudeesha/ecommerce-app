@@ -9,19 +9,10 @@ use Exception;
 class CartHandler
 {
 
-    public function index(array $params)
+    public function fetchCartDetails()
     {
-        // $search = $params['search'] ?? null;
-
-        // try {
-        //     return Product::when($search, function ($query) use ($search) {
-        //         return $query->where('name', 'LIKE', '%' . $search . '%')
-        //                     ->orWhere('description', 'LIKE', '%' . $search . '%');
-        //     })->paginate(7);
-        // } catch (Exception $e) {
-        //     \Log::error('Error fetching products: ' . $e->getMessage());
-        //     throw new Exception('Error fetching products: ' . $e->getMessage());
-        // }
+        $userId = auth()->id();
+        return Cart::where('user_id', $userId)->with('product')->get();
     }
 
     public function add(array $data): void
@@ -43,51 +34,31 @@ class CartHandler
         }
     }
 
-    public function fetchProductById($id)
+    public function updateCartItem($data)
     {
-        // try {
-        //     $product = Product::find($id);
+        $cartItem = Cart::where('id', $data['cart_id'])
+            ->where('user_id', auth()->id())
+            ->first();
 
-        //     if (!$product) {
-        //         throw new Exception('Product not found');
-        //     }
+        if ($cartItem) {
+            $cartItem->update(['quantity' => $data['quantity']]);
+            return ['message' => 'Cart updated successfully!', 'status' => true];
+        }
 
-        //     return $product;
-        // } catch (Exception $e) {
-        //     throw new Exception('Error fetching product: ' . $e->getMessage());
-        // }
+        return ['message' => 'Cart item not found.', 'status' => false];
     }
 
-    public function update(array $data, $id)
+    public function removeCartItem($data)
     {
-        // try {
-        //     $product = Product::findOrFail($id);
-        //     $originalData = $product->getOriginal();
+        $cartItem = Cart::where('id', $data['cart_id'])
+            ->where('user_id', auth()->id())
+            ->first();
 
-        //     $product->fill($data);
-        //     $product->save();
+        if ($cartItem) {
+            $cartItem->delete();
+            return ['message' => 'Item removed from cart.', 'status' => true];
+        }
 
-        //     $this->adminLogService->logAction(auth()->id(), 'update', 'products', $product->id, 'Updated a product', $originalData, $data);
-
-        // } catch (Exception $e) {
-        //     throw new Exception('Error updating product: ' . $e->getMessage());
-        // }
-    }
-
-    public function delete($id)
-    {
-        // try {
-        //     $product = Product::find($id);
-
-        //     if ($product) {
-        //         $product->delete();
-
-        //         $this->adminLogService->logAction(auth()->id(), 'delete', 'products', $product->id, 'Deleted a product');
-        //     } else {
-        //         throw new Exception('Product not found.');
-        //     }
-        // } catch (Exception $e) {
-        //     throw new Exception('Error deleting product: ' . $e->getMessage());
-        // }
+        return ['message' => 'Cart item not found.', 'status' => false];
     }
 }

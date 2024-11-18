@@ -12,4 +12,10 @@ class Product extends Model
     protected $fillable = [
         'title', 'description', 'image', 'price', 'category', 'quantity'
     ];
+
+    // Define the inverse relationship to the Cart model
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }
