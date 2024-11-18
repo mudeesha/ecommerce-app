@@ -206,7 +206,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('admincss/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Chart.js for charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -485,7 +485,7 @@
     //pagination
     function generatePagination(data) {
         let pagination = $('#pagination');
-        pagination.empty(); 
+        pagination.empty();
 
         let currentPage = data.current_page;
         let lastPage = data.last_page;
@@ -501,7 +501,7 @@
                 ? 'active bg-gray-500 text-white' // No border class for active link
                 : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white';
             pagination.append(`<li><a class="flex items-center justify-center px-3 h-8 leading-tight ${activeClass}" href="#" onclick="fetchCategories('', ${i})">${i}</a></li>`);
-        }   
+        }
         // Next button
         if (currentPage < lastPage) {
             pagination.append(`<li><a class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" href="#" onclick="fetchCategories('', ${currentPage + 1})">Next</a></li>`);

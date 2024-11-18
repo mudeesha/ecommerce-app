@@ -2,12 +2,23 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\User\CartController;
 
-route::get('/',[HomeController::class, 'home']);
+Route::prefix('home')->group(function () {
+    route::get('/',[HomeController::class, 'home']);
+    Route::get('/product', [HomeController::class, 'index']);
+    Route::get('/product/{id}', [HomeController::class, 'showProduct']);
+});
+
+Route::prefix('cart')->middleware(['auth', 'verified'])->group(function () {
+    route::post('/add',[CartController::class, 'store']);
+    // Route::get('/product', [cartController::class, 'index']);
+    // Route::get('/product/{id}', [cartController::class, 'showProduct']);
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');

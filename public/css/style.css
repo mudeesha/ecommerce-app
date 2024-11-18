@@ -408,6 +408,18 @@ a:focus {
   transition: all .3s;
 }
 
+.shop_section .priview-btn-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.shop_section .priview-btn-box button {
+    border-radius: 50px;
+    width: 100%;
+}
+
 .shop_section .btn-box a:hover {
   background-color: transparent;
   color: #f16179;
@@ -416,6 +428,60 @@ a:focus {
 .saving_section {
   padding-left: 45px;
   padding-right: 45px;
+}
+
+#previewModal .close-button {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    background-color: black;
+    color: white;
+    border: none;
+    font-size: 20px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#previewModal .close-button:hover {
+    background-color: #555;
+}
+
+#previewModal .img-thumbnail {
+    border-radius: 4px;
+    width: 100%;
+    max-width: 80px;
+}
+
+#previewModal .img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+#previewModal .btn-outline-secondary {
+    border-color: #ccc;
+    color: #555;
+}
+
+#previewModal .btn-outline-secondary:hover {
+    background-color: #ddd;
+}
+
+#previewModal .btn-danger {
+    background-color: #ff4747;
+    border: none;
+}
+
+#previewModal .btn-danger:hover {
+    background-color: #e63939;
+}
+
+#previewModal .thumb {
+    margin-top: 5px;
 }
 
 .saving_section .box {
