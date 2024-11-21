@@ -15,28 +15,38 @@ class CartHandler
         return Cart::where('user_id', $userId)->with('product')->get();
     }
 
-    public function add(array $data): void
+    public function add(array $data)
     {
-        \Log::alert('p-id: ', $data);
         try {
+            $exists = Cart::where('product_id', $data['product_id'])
+                ->where('user_id', auth()->id())
+                ->exists();
+
+            if ($exists) {
+                return response()->json(['error' => 'This item is already added to the cart'], 400);
+            }
+
             Cart::create([
                 'product_id' => $data['product_id'],
                 'quantity' => $data['quantity'],
                 'user_id' => auth()->id(),
             ]);
+
+            return response()->json(['message' => 'Item added to cart successfully'], 200);
         } catch (Exception $e) {
             \Log::error('Error adding product to cart', [
                 'user_id' => auth()->id(),
                 'data' => $data,
                 'error' => $e->getMessage(),
             ]);
-            throw new Exception('Error adding product to cart: ' . $e->getMessage());
+
+            return response()->json(['error' => 'An error occurred while adding the item to the cart.'], 500);
         }
     }
 
     public function updateCartItem($data)
     {
-        $cartItem = Cart::where('id', $data['cart_id'])
+        $cartItem = Cart::where('id', $data['id'])
             ->where('user_id', auth()->id())
             ->first();
 
@@ -50,15 +60,13 @@ class CartHandler
 
     public function removeCartItem($data)
     {
-        $cartItem = Cart::where('id', $data['cart_id'])
-            ->where('user_id', auth()->id())
-            ->first();
+        try {
+            // Delete the selected cart items
+            Cart::whereIn('id', $data['itemIds'])->delete();
 
-        if ($cartItem) {
-            $cartItem->delete();
-            return ['message' => 'Item removed from cart.', 'status' => true];
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to delete items. Please try again.']);
         }
-
-        return ['message' => 'Cart item not found.', 'status' => false];
     }
 }

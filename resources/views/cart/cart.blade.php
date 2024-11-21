@@ -52,7 +52,7 @@
         <div class="col-lg-8 cart-wrap">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4>Cart (3)</h4>
-                <a href="#" class="text-danger">Delete selected items</a>
+                <a href="#" class="text-danger delete-cart">Delete selected items</a>
             </div>
 
             {{-- cart item --}}
@@ -164,7 +164,7 @@ $(document).ready(function () {
             cartHTML += `
             <div class="card mb-3">
                 <div class="card-body cart-item d-flex align-items-center">
-                    <input type="checkbox" class="form-check-input me-3" data-cart-id="${item.id}">
+                    <input type="checkbox" class="form-check-input me-3" cart-item-id="${item.id}">
                     <img src="${imageUrl}" alt="Product" class="rounded" width="80">
                     <div class="ms-3">
                         <h6 class="mb-0">${item.product.name}</h6>
@@ -174,9 +174,9 @@ $(document).ready(function () {
                     <div class="ms-auto">
                         <h6 class="text-danger">LKR ${parseFloat(item.product.price).toFixed(2)}</h6>
                         <div class="quantity-control mt-2">
-                            <button class="btn btn-outline-secondary btn-sm btn-decrease" data-cart-id="${item.id}">-</button>
+                            <button class="btn btn-outline-secondary btn-sm btn-decrease" cart-item-id="${item.id}">-</button>
                             <span class="mx-2 quantity">${item.quantity}</span>
-                            <button class="btn btn-outline-secondary btn-sm btn-increase" data-cart-id="${item.id}">+</button>
+                            <button class="btn btn-outline-secondary btn-sm btn-increase" cart-item-id="${item.id}">+</button>
                         </div>
                     </div>
                 </div>
@@ -205,7 +205,9 @@ $(document).ready(function () {
 
     // Handle quantity update
     $(document).on('click', '.btn-increase, .btn-decrease', function () {
-        const cartId = $(this).data('cart-id');
+        const cartId = $(this).attr('cart-item-id');
+        console.log(cartId);
+
         const quantityElement = $(this).siblings('.quantity');
         let quantity = parseInt(quantityElement.text());
         const action = $(this).hasClass('btn-increase') ? 'increase' : 'decrease';
@@ -221,7 +223,7 @@ $(document).ready(function () {
             url: '{{ route("cart.update") }}',
             type: 'POST',
             data: {
-                cart_id: cartId,
+                id: cartId,
                 quantity: quantity,
                 _token: '{{ csrf_token() }}'
             },
@@ -240,25 +242,35 @@ $(document).ready(function () {
 
     // Handle cart item removal
     $(document).on('click', '.btn-remove', function () {
-        const cartId = $(this).data('cart-id');
+        const selectedItems = [];
+        $('.form-check-input:checked').each(function () {
+            selectedItems.push($(this).attr('cart-item-id'));
+        });
+
+         // If no items are selected, alert the user
+        if (selectedItems.length === 0) {
+            alert('Please select items to delete.');
+            return;
+        }
 
         // Remove item via AJAX
         $.ajax({
             url: '{{ route("cart.remove") }}',
-            type: 'POST',
+            type: 'post',
             data: {
-                cart_id: cartId,
+                itemIds: selectedItems,
                 _token: '{{ csrf_token() }}'
             },
             success: function (response) {
-                if (response.status) {
-                    fetchCartItems(); // Refresh cart
-                } else {
-                    alert(response.message);
-                }
+                console.log("hi");
+                console.log(response);
+
+                // alert(response.message);
+                fetchCartItems();
             },
-            error: function () {
-                alert('Failed to remove item.');
+            error: function (xhr) {
+                alert('An error occurred. Please try again.');
+                console.error(xhr.responseText);
             }
         });
     });
@@ -276,7 +288,7 @@ $(document).ready(function () {
         const selectedItems = [];
 
         $('.cart-item input[type="checkbox"]:checked').each(function () {
-            selectedItems.push($(this).data('cart-id'));
+            selectedItems.push($(this).attr('cart-item-id'));
         });
 
         if (selectedItems.length === 0) {
@@ -294,7 +306,7 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (response.status) {
-                    fetchCartItems(); // Refresh cart
+                    fetchCartItems();
                 } else {
                     alert(response.message);
                 }

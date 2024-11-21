@@ -16,7 +16,7 @@ class CartService
 
     public function addCart(array $data)
     {
-        $this->cartHandler->add($data);
+        return $this->cartHandler->add($data);
     }
 
     // Fetch cart details

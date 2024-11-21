@@ -24,7 +24,7 @@ class CartController extends Controller
     public function index()
     {
         $cartDetails = $this->cartService->getCartDetails();
-        return view('cart.cart');
+        return view('cart.index');
     }
 
     public function fetch()
@@ -36,8 +36,7 @@ class CartController extends Controller
     public function store(CartAddRequest $request): JsonResponse
     {
         try {
-            $this->cartService->addCart($request->validated());
-            return response()->json(['message' => 'Added into the Cart successfully'], 201);
+            return $this->cartService->addCart($request->validated());
         } catch (Exception $e) {
             \Log::error('Error adding to Cart: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to add to Cart'], 500);
@@ -52,7 +51,12 @@ class CartController extends Controller
 
     public function remove(CartRemoveRequest $request)
     {
-        $response = $this->cartService->removeCartItem($request->validated());
+        // Retrieve the validated cart IDs
+        $cartIds = $request->validated()['cart_ids'];
+
+        // Pass the cart IDs to the service
+        $response = $this->cartService->removeCartItem(['itemIds' => $cartIds]);
+
         return response()->json($response);
     }
 }

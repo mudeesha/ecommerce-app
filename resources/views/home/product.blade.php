@@ -170,8 +170,9 @@
                     // updateCartCount();
                 },
                 error: function(xhr) {
-                    // validation errors returned by laravel
-                    if (xhr.status === 422) {
+                    if (xhr.status === 400) {
+                        alert(xhr.responseJSON.error); // Show the "already added" message
+                    } else if (xhr.status === 422) {
                         const errors = xhr.responseJSON.errors;
                         for (const key in errors) {
                             if (errors.hasOwnProperty(key)) {
@@ -179,7 +180,7 @@
                             }
                         }
                     } else {
-                        console.error('Error adding category:', xhr);
+                        console.error('Error adding product:', xhr);
                         tosterAlert("error", "An unexpected error occurred.");
                     }
                 }

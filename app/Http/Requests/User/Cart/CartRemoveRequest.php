@@ -22,7 +22,8 @@ class CartRemoveRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:carts,id',
+            'cart_ids' => 'required|array',
+            'cart_ids.*' => 'exists:carts,id',
         ];
     }
 }
