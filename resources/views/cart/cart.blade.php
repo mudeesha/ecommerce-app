@@ -305,14 +305,12 @@ $(document).ready(function () {
                 _token: '{{ csrf_token() }}'
             },
             success: function (response) {
-                if (response.status) {
-                    fetchCartItems();
-                } else {
-                    alert(response.message);
-                }
+                alert(response.message);
+                fetchCartItems();
             },
-            error: function () {
-                alert('Failed to delete selected items.');
+            error: function (xhr) {
+                alert('An error occurred. Please try again.');
+                console.error(xhr.responseText);
             }
         });
     });

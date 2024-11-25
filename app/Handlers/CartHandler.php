@@ -62,11 +62,16 @@ class CartHandler
     {
         try {
             // Delete the selected cart items
-            Cart::whereIn('id', $data['itemIds'])->delete();
+            $deletedItems = Cart::whereIn('id', $data['itemIds'])->delete();
 
-            return response()->json(['success' => true]);
+            if ($deletedItems) {
+                return response()->json(['status' => 'success', 'message' => 'Cart item(s) deleted']);
+            } else {
+                return response()->json(['status' => 'failure', 'message' => 'No items were deleted']);
+            }
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Failed to delete items. Please try again.']);
+            return response()->json(['status' => 'error', 'message' => 'Failed to delete items. Please try again.']);
         }
     }
+
 }

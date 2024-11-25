@@ -51,12 +51,15 @@ class CartController extends Controller
 
     public function remove(CartRemoveRequest $request)
     {
-        // Retrieve the validated cart IDs
-        $cartIds = $request->validated()['cart_ids'];
+        try {
+            // Retrieve the validated cart IDs
+            $cartIds = $request->validated()['cart_ids'];
 
-        // Pass the cart IDs to the service
-        $response = $this->cartService->removeCartItem(['itemIds' => $cartIds]);
-
-        return response()->json($response);
+            $this->cartService->removeCartItem(['itemIds' => $cartIds]);
+            return response()->json(['message' => 'Cart item(s) deleted successfully']);
+        } catch (Exception $e) {
+            \Log::error('Error deleting cart item(s): ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
     }
 }

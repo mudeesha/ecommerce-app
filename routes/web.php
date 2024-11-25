@@ -8,8 +8,9 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\User\CartController;
 
+route::get('/',[HomeController::class, 'home']);
+
 Route::prefix('home')->group(function () {
-    route::get('/',[HomeController::class, 'home']);
     Route::get('/product', [HomeController::class, 'index']);
     Route::get('/product/{id}', [HomeController::class, 'showProduct']);
 });
@@ -64,5 +65,5 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
 
 Route::get('/abc', function () {
-    return view('cart/index');
+    return view('order/index');
 });
