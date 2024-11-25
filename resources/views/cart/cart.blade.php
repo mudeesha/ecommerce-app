@@ -55,26 +55,7 @@
                 <a href="#" class="text-danger delete-cart">Delete selected items</a>
             </div>
 
-            {{-- cart item --}}
-            {{-- <div class="card mb-3">
-                <div class="card-body cart-item d-flex align-items-center">
-                    <input type="checkbox" class="form-check-input me-3">
-                    <img src="https://via.placeholder.com/80" alt="Product">
-                    <div class="ms-3">
-                        <h6 class="mb-0">Original Silicone Case for Apple iPhone</h6>
-                        <small class="text-muted">Shop1103441067 Store</small>
-                        <div class="text-danger small">Almost sold out</div>
-                    </div>
-                    <div class="ms-auto">
-                        <h6 class="text-danger">LKR 289.42</h6>
-                        <div class="quantity-control mt-2">
-                            <button class="btn btn-outline-secondary btn-sm">-</button>
-                            <span class="mx-2">1</span>
-                            <button class="btn btn-outline-secondary btn-sm">+</button>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
+
 
         </div>
 
@@ -314,6 +295,38 @@ $(document).ready(function () {
             }
         });
     });
+
+    $(document).on('click', '.btn-checkout', function () {
+        const selectedItems = [];
+        $('.cart-item input[type="checkbox"]:checked').each(function () {
+            selectedItems.push($(this).attr('cart-item-id'));
+        });
+
+        if (selectedItems.length === 0) {
+            alert('Please select items to checkout.');
+            return;
+        }
+
+        // Load order page dynamically
+        $.ajax({
+            url: '{{ route("order.load") }}',
+            type: 'POST',
+            data: {
+                cart_ids: selectedItems,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function (response) {
+                $('body').html(response); // Replace the body content with the order page
+            },
+            error: function (xhr) {
+                alert('Failed to load order page.');
+                console.error(xhr.responseText);
+            }
+        });
+    });
+
+
+
 });
 
 

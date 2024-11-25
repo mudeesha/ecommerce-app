@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\User\Order;
+namespace App\Http\Requests\Order;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -14,11 +14,8 @@ class OrderAddRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'shipping_address' => 'required|string|max:255',
-            'payment_method' => 'required|string|max:50',
-            'cart_items' => 'required|array',
-            'cart_items.*.id' => 'required|exists:carts,id',
-            'cart_items.*.quantity' => 'required|integer|min:1',
+            'cart_ids' => 'required|array|min:1',
+            'cart_ids.*' => 'exists:carts,id',
         ];
     }
 }

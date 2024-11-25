@@ -65,18 +65,81 @@
             width: 80px;
             height: auto;
         }
+
+        /* modal */
+/* Modal Customization */
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Payment Options */
+.payment-option {
+  cursor: pointer;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease;
+}
+
+.payment-option:hover {
+  background-color: #eef5ff;
+}
+
+.payment-option p {
+  font-size: 16px;
+}
+
+/* Radio Button Customization */
+.form-check-input {
+  transform: scale(1.3);
+  accent-color: #007bff;
+}
+
+/* Add New Card Link */
+#addNewCard {
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+#addNewCard:hover {
+  text-decoration: none;
+}
+
+/* Alert Styling */
+.alert-success {
+  background-color: #e9f7ef;
+  color: #155724;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+/* Continue Button */
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+
     </style>
 </head>
 <body>
     <div class="container my-5">
         <div class="row">
             <!-- Left Column -->
-            <div class="col-lg-8">
+            <div class="col-lg-8 order-items">
                 <!-- Shipping Address Section -->
                 <div class="section-bordered">
                     <h5 class="mb-3">Shipping Address</h5>
                     <div class="d-flex justify-content-between align-items-center">
-                        <p class="mb-0">New York, New York, United States, 10026</p>
+                        <p class="mb-0 shipping-address"></p>
                         <span class="change-link">Change</span>
                     </div>
                 </div>
@@ -88,7 +151,7 @@
                 </div>
 
                 <!-- Product Section -->
-                <div class="card-product p-3 mb-4">
+                {{-- <div class="card-product p-3 mb-4">
                     <div class="d-flex">
                         <img src="https://via.placeholder.com/80" alt="Product Image" class="product-image me-3">
                         <div>
@@ -97,7 +160,7 @@
                             <p class="mb-0">US $10.99</p>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
             <!-- Right Column -->
@@ -106,11 +169,11 @@
                     <h5 class="mb-4">Summary</h5>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Total item costs</span>
-                        <span>US $10.99</span>
+                        <span class="total-item-costs"></span>
                     </div>
                     <div class="d-flex justify-content-between mb-2 text-danger">
                         <span>Saved</span>
-                        <span>-US $0.11</span>
+                        <span class="saved"></span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Promo Code</span>
@@ -120,26 +183,88 @@
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Total shipping</span>
-                        <span>US $0.66</span>
+                        <span class="delivery-fee"></span>
                     </div>
                     <div class="d-flex justify-content-between mb-3">
                         <strong>Total</strong>
-                        <strong>US $11.54</strong>
+                        <strong class="total-cost"></strong>
                     </div>
                     <button class="btn place-order-btn w-100">Place order</button>
                     <p class="text-muted mt-2 text-center" style="font-size: 12px;">
                         Upon clicking 'Place Order', I confirm I have read and acknowledged all
                         <a href="#" class="text-decoration-none">terms and policies</a>.
                     </p>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentMethodModal">
+                        Open Payment Modal
+                      </button>
                 </div>
             </div>
         </div>
+
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
+<!-- Payment Method Modal -->
+<div class="modal fade" id="paymentMethodModal" tabindex="-1" aria-labelledby="paymentMethodModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold" id="paymentMethodModalLabel">Choose payment method</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <!-- Payment Option 1: Credit or Debit Card -->
+          <div class="payment-option d-flex align-items-center justify-content-between p-3 mb-3 border rounded">
+            <div class="d-flex align-items-center">
+              <img src="https://via.placeholder.com/50x30?text=Card" alt="Card Icon" class="me-3" style="width: 50px; height: 30px;">
+              <div>
+                <p class="mb-0 fw-bold">Credit or Debit Card</p>
+              </div>
+            </div>
+            <input class="form-check-input" type="radio" name="paymentMethod" id="creditCardOption" checked>
+          </div>
+          <!-- Payment Option 2: Cash on Delivery -->
+          <div class="payment-option d-flex align-items-center justify-content-between p-3 mb-3 border rounded">
+            <div class="d-flex align-items-center">
+              <img src="https://via.placeholder.com/50x30?text=Cash" alt="Cash Icon" class="me-3" style="width: 50px; height: 30px;">
+              <div>
+                <p class="mb-0 fw-bold">Cash on Delivery</p>
+              </div>
+            </div>
+            <input class="form-check-input" type="radio" name="paymentMethod" id="codOption">
+          </div>
+          <!-- Add New Card -->
+          <div class="text-center">
+            <a href="#" id="addNewCard" class="text-primary fw-bold text-decoration-none">+ Add new card</a>
+          </div>
+          <!-- Security Notice -->
+          <div class="alert alert-success d-flex align-items-center mt-4 p-3 rounded-3">
+            <i class="bi bi-shield-lock-fill me-2"></i>
+            <small>We adhere entirely to the data security standards of the payment card industry.</small>
+          </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-primary w-100 fw-bold">Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 </html>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    Launch demo modal
+  </button>
+
+
 
 
 
@@ -149,200 +274,73 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
 <script>
+    $(document).ready(function () {
+        // Load order data via AJAX
+        function loadOrderData(cartIds) {
+            $.ajax({
+                url: '{{ route("order.data") }}',
+                type: 'POST',
+                data: {
+                    cart_ids: cartIds,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    if (response.status) {
+                        console.log(response.data);
+                        renderOrderDetails(response.data);
+                    } else {
+                        alert(response.message || 'Failed to load order data.');
+                    }
+                },
+                error: function (xhr) {
+                    console.error('Error loading order data:', xhr);
+                }
+            });
+        }
 
-// $(document).ready(function () {
-//     // Load cart items on page load
-//     fetchCartItems();
+        // Render Order Details
+        function renderOrderDetails(data) {
+            const address = data.user.address;
+            $('.shipping-address').text(address);
 
-//     // Fetch cart items via AJAX
-//     function fetchCartItems() {
-//         $.ajax({
-//             url: '{{ route("cart.items") }}',
-//             type: 'GET',
-//             success: function (response) {
-//                 console.log(response);
+            let itemsHTML = '';
+            let total = 0, discount = 0, deliveryFee = 300;
 
-//                 if (response.status) {
-//                     renderCartItems(response.data); // Populate cart items
-//                     updateCartSummary(response.data); // Update summary
-//                 } else {
-//                     showEmptyCartMessage();
-//                 }
-//             },
-//             error: function (xhr) {
-//                 console.error('Error showing cart:', xhr);
-//             }
-//         });
-//     }
+            data.items.forEach(item => {
+                let imageUrl = item.image ? `/storage/${item.image}` : '/images/placeholder.png';
+                total += item.price * item.quantity;
+                discount += item.discount || 0;
 
-//     // Render cart items dynamically
-//     function renderCartItems(items) {
-//         const cartWrapper = $('.col-lg-8');
-//         cartWrapper.find('.card').remove(); // Clear existing items
+                itemsHTML += `
+                    <div class="card-product p-3 mb-4">
+                        <div class="d-flex">
+                            <img src="${imageUrl}" alt="Product Image" class="product-image me-3">
+                            <div>
+                                <h6 class="mb-1">${item.name}</h6>
+                                <p class="text-muted mb-1">${item.description}</p>
+                                <p class="mb-0">LKR ${item.price}</p>
+                            </div>
+                        </div>
+                    </div>`;
+            });
 
-//         if (items.length === 0) {
-//             showEmptyCartMessage();
-//             return;
-//         }
+            $('.order-items').append(itemsHTML);
 
-//         let cartHTML = '';
-//         items.forEach(item => {
-//             let imageUrl = item.product.main_image_url ? `/storage/${item.product.main_image_url}` : '/images/placeholder.png';
-//             cartHTML += `
-//             <div class="card mb-3">
-//                 <div class="card-body cart-item d-flex align-items-center">
-//                     <input type="checkbox" class="form-check-input me-3" cart-item-id="${item.id}">
-//                     <img src="${imageUrl}" alt="Product" class="rounded" width="80">
-//                     <div class="ms-3">
-//                         <h6 class="mb-0">${item.product.name}</h6>
-//                         <small class="text-muted">${item.shop_name}</small>
-//                         ${item.is_almost_sold_out ? '<div class="text-danger small">Almost sold out</div>' : ''}
-//                     </div>
-//                     <div class="ms-auto">
-//                         <h6 class="text-danger">LKR ${parseFloat(item.product.price).toFixed(2)}</h6>
-//                         <div class="quantity-control mt-2">
-//                             <button class="btn btn-outline-secondary btn-sm btn-decrease" cart-item-id="${item.id}">-</button>
-//                             <span class="mx-2 quantity">${item.quantity}</span>
-//                             <button class="btn btn-outline-secondary btn-sm btn-increase" cart-item-id="${item.id}">+</button>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>`;
-//         });
+            // Update the summary
+            const totalCost = total + deliveryFee - discount;
+            $('.total-item-costs').text(`LKR ${total}`);
+            $('.delivery-fee').text(`LKR ${deliveryFee}`);
+            $('.saved').text(`- LKR ${discount}`);
+            $('.total-cost').text(`LKR ${totalCost}`);
+        }
 
-//         cartWrapper.prepend(cartHTML);
-//     }
-
-//     // Update the cart summary dynamically
-//     function updateCartSummary(items) {
-//         let subtotal = 0, shipping = 289.42, saved = 0;
-
-//         items.forEach(item => {
-//             subtotal += item.product.price * item.quantity;
-//             saved += item.product.discount || 0;
-//         });
-
-//         const total = subtotal + shipping - saved;
-
-//         $('.cart-summary .d-flex span').eq(1).text(`LKR ${subtotal.toFixed(2)}`);
-//         $('.cart-summary .d-flex span').eq(3).text(`LKR ${shipping.toFixed(2)}`);
-//         $('.cart-summary .d-flex span').eq(5).text(`- LKR ${saved.toFixed(2)}`);
-//         $('.cart-summary .d-flex strong').eq(1).text(`LKR ${total.toFixed(2)}`);
-//     }
-
-//     // Handle quantity update
-//     $(document).on('click', '.btn-increase, .btn-decrease', function () {
-//         const cartId = $(this).attr('cart-item-id');
-//         console.log(cartId);
-
-//         const quantityElement = $(this).siblings('.quantity');
-//         let quantity = parseInt(quantityElement.text());
-//         const action = $(this).hasClass('btn-increase') ? 'increase' : 'decrease';
-
-//         if (action === 'increase') {
-//             quantity++;
-//         } else if (quantity > 1) {
-//             quantity--;
-//         }
-
-//         // Update quantity via AJAX
-//         $.ajax({
-//             url: '{{ route("cart.update") }}',
-//             type: 'POST',
-//             data: {
-//                 id: cartId,
-//                 quantity: quantity,
-//                 _token: '{{ csrf_token() }}'
-//             },
-//             success: function (response) {
-//                 if (response.status) {
-//                     fetchCartItems(); // Refresh cart
-//                 } else {
-//                     alert(response.message);
-//                 }
-//             },
-//             error: function () {
-//                 alert('Failed to update quantity.');
-//             }
-//         });
-//     });
-
-//     // Handle cart item removal
-//     $(document).on('click', '.btn-remove', function () {
-//         const selectedItems = [];
-//         $('.form-check-input:checked').each(function () {
-//             selectedItems.push($(this).attr('cart-item-id'));
-//         });
-
-//          // If no items are selected, alert the user
-//         if (selectedItems.length === 0) {
-//             alert('Please select items to delete.');
-//             return;
-//         }
-
-//         // Remove item via AJAX
-//         $.ajax({
-//             url: '{{ route("cart.remove") }}',
-//             type: 'post',
-//             data: {
-//                 itemIds: selectedItems,
-//                 _token: '{{ csrf_token() }}'
-//             },
-//             success: function (response) {
-//                 console.log("hi");
-//                 console.log(response);
-
-//                 // alert(response.message);
-//                 fetchCartItems();
-//             },
-//             error: function (xhr) {
-//                 alert('An error occurred. Please try again.');
-//                 console.error(xhr.responseText);
-//             }
-//         });
-//     });
-
-//     // Show empty cart message
-//     function showEmptyCartMessage() {
-//         const cartWrapper = $('.col-lg-8');
-//         cartWrapper.find('.card').remove(); // Clear existing items
-//         cartWrapper.append('<p class="text-center text-muted">Your cart is empty.</p>');
-//     }
-
-//     // Delete selected items
-//     $('.text-danger').click(function (e) {
-//         e.preventDefault();
-//         const selectedItems = [];
-
-//         $('.cart-item input[type="checkbox"]:checked').each(function () {
-//             selectedItems.push($(this).attr('cart-item-id'));
-//         });
-
-//         if (selectedItems.length === 0) {
-//             alert('No items selected.');
-//             return;
-//         }
-
-//         // Remove selected items via AJAX
-//         $.ajax({
-//             url: '{{ route("cart.remove") }}',
-//             type: 'POST',
-//             data: {
-//                 cart_ids: selectedItems,
-//                 _token: '{{ csrf_token() }}'
-//             },
-//             success: function (response) {
-//                 alert(response.message);
-//                 fetchCartItems();
-//             },
-//             error: function (xhr) {
-//                 alert('An error occurred. Please try again.');
-//                 console.error(xhr.responseText);
-//             }
-//         });
-//     });
-// });
-
+        // Fetch data for the initial load
+        const cartIds = {!! json_encode(request('cart_ids', [])) !!};
+        loadOrderData(cartIds);
+    });
 
 </script>

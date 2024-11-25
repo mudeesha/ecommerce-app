@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\OrderController;
 
 route::get('/',[HomeController::class, 'home']);
 
@@ -14,6 +15,10 @@ Route::prefix('home')->group(function () {
     Route::get('/product', [HomeController::class, 'index']);
     Route::get('/product/{id}', [HomeController::class, 'showProduct']);
 });
+
+Route::post('/order/load', [OrderController::class, 'loadOrder'])->name('order.load');
+Route::post('/order/data', [OrderController::class, 'getOrderData'])->name('order.data');
+
 
 Route::prefix('cart')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');

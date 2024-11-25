@@ -48,8 +48,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function orders()
+    public function carts()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Cart::class);
     }
 }
