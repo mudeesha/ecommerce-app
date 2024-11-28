@@ -65,20 +65,16 @@
                 <h5>Summary</h5>
                 <div class="d-flex justify-content-between">
                     <span>Subtotal</span>
-                    <span>LKR 2,069.92</span>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <span>Shipping fee</span>
-                    <span>LKR 289.42</span>
+                    <span></span>
                 </div>
                 <div class="d-flex justify-content-between">
                     <span>Saved</span>
-                    <span class="text-danger">- LKR 309.88</span>
+                    <span class="text-danger"></span>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <strong>Total</strong>
-                    <strong>LKR 2,049.46</strong>
+                    <strong></strong>
                 </div>
                 <button class="btn btn-checkout w-100 mt-3">Checkout (3)</button>
 
@@ -114,7 +110,7 @@ $(document).ready(function () {
             url: '{{ route("cart.items") }}',
             type: 'GET',
             success: function (response) {
-                console.log(response);
+                console.log("hiii: ",response);
 
                 if (response.status) {
                     renderCartItems(response.data); // Populate cart items
@@ -169,18 +165,24 @@ $(document).ready(function () {
 
     // Update the cart summary dynamically
     function updateCartSummary(items) {
-        let subtotal = 0, shipping = 289.42, saved = 0;
+        let subtotal = 0, saved = 0;
+        console.log("items: ", items);
+        
 
         items.forEach(item => {
+            console.log("discount: ",item.product.discount_price);
+            console.log("price: ",item.product.price);
+            console.log("quantity: ",item.quantity);
             subtotal += item.product.price * item.quantity;
-            saved += item.product.discount || 0;
+            saved += item.product.discount_price * item.quantity;
         });
 
-        const total = subtotal + shipping - saved;
+        const total = subtotal - saved;
+        console.log("saved: ", saved);
+        
 
         $('.cart-summary .d-flex span').eq(1).text(`LKR ${subtotal.toFixed(2)}`);
-        $('.cart-summary .d-flex span').eq(3).text(`LKR ${shipping.toFixed(2)}`);
-        $('.cart-summary .d-flex span').eq(5).text(`- LKR ${saved.toFixed(2)}`);
+        $('.cart-summary .d-flex span').eq(3).text(`- LKR ${saved.toFixed(2)}`);
         $('.cart-summary .d-flex strong').eq(1).text(`LKR ${total.toFixed(2)}`);
     }
 
