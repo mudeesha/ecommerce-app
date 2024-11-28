@@ -1661,12 +1661,12 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 		/*---------------------------------------------*/
 
-		$('.js-addcart-detaill').each(function(){
+		function swalAlert(message){
 			var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
 			$(this).on('click', function(){
-				swal(nameProduct, "is added to cart !", "success");
+				swal(message);
 			});
-		});
+		}
 
 	</script>
 

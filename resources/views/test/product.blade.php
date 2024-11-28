@@ -134,12 +134,12 @@
                     _token: '{{ csrf_token() }}',
                 },
                 success: function (response) {
-                    alert(response.message);
+                    swal(response.message);
                     // updateCartCount();
                 },
                 error: function(xhr) {
                     if (xhr.status === 400) {
-                        alert(xhr.responseJSON.error); // Show the "already added" message
+                        swal(xhr.responseJSON.error); // Show the "already added" message
                     } else if (xhr.status === 422) {
                         const errors = xhr.responseJSON.errors;
                         for (const key in errors) {

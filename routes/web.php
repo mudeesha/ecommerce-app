@@ -8,6 +8,9 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\OrderController;
+Route::get('/test', function () {
+    return view('test.index');
+});
 
 route::get('/',[HomeController::class, 'home']);
 
