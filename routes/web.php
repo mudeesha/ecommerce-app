@@ -72,3 +72,16 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 Route::get('/abc', function () {
     return view('order/index');
 });
+
+Route::controller(OrderController::class)->group(function(){
+
+    Route::get('stripe', 'stripe');
+
+    Route::post('stripe', 'stripePost')->name('stripe.post');
+
+});
+
+Route::post('/order/create', [OrderController::class, 'createOrder'])->name('order.create');
+Route::post('/order/stripe', [OrderController::class, 'stripePayment'])->name('order.stripe');
+Route::get('/stripe/callback', [OrderController::class, 'stripeCallback'])->name('stripe.callback');
+

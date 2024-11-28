@@ -8,6 +8,7 @@ use App\Services\User\OrderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Stripe;
 
 class OrderController extends Controller
 {
@@ -27,6 +28,11 @@ class OrderController extends Controller
     {
         $data = $this->orderService->getOrderDetails($request->validated());
         return response()->json(['status' => true, 'data' => $data]);
+    }
+
+    public function stripe()
+    {
+        return view('stripe');
     }
 
 }

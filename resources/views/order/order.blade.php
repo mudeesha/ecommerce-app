@@ -147,7 +147,7 @@
                 <!-- Payment Methods Section -->
                 <div class="section-bordered">
                     <h5 class="mb-3">Payment Methods</h5>
-                    <span class="change-link">Select Payment Method</span>
+                    <span class="change-link select-payment" data-bs-toggle="modal" data-bs-target="#paymentMethodModal">Select Payment Method</span>
                 </div>
 
                 <!-- Product Section -->
@@ -164,7 +164,7 @@
             </div>
 
             <!-- Right Column -->
-            <div class="col-lg-4">
+            <div class="col-lg-4 summary-wrapper">
                 <div class="summary-section">
                     <h5 class="mb-4">Summary</h5>
                     <div class="d-flex justify-content-between mb-2">
@@ -194,9 +194,48 @@
                         Upon clicking 'Place Order', I confirm I have read and acknowledged all
                         <a href="#" class="text-decoration-none">terms and policies</a>.
                     </p>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentMethodModal">
-                        Open Payment Modal
-                      </button>
+                </div>
+            </div>
+
+            <div class="col-lg-4 payment-wrapper d-none">
+                <div class="summary-section">
+                    <h5 class="mb-4">Payment Details</h5>
+                    <div class="mb-3">
+                        <label for="cardholder-name" class="form-label">Cardholder's Name</label>
+                        <input type="text" class="form-control form-control-sm" id="cardholder-name" placeholder="Enter cardholder's name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="card-number" class="form-label">Card Number</label>
+                        <input type="text" class="form-control form-control-sm" id="card-number" placeholder="Enter card number">
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="expiration-date" class="form-label">Expiration</label>
+                            <input type="text" class="form-control form-control-sm" id="expiration-date" placeholder="MM/YY">
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control form-control-sm" id="cvv" placeholder="CVV">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal</span>
+                        <span class="subtotal"></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Shipping</span>
+                        <span class="delivery-fee"></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <strong>Total</strong>
+                        <strong class="total-cost"></strong>
+                    </div>
+                    <button class="btn place-order-btn w-100">Pay</button>
+                    <p class="text-muted mt-2 text-center" style="font-size: 12px;">
+                        Upon clicking 'Place Order', I confirm I have read and acknowledged all
+                        <a href="#" class="text-decoration-none">terms and policies</a>.
+                    </p>
                 </div>
             </div>
         </div>
@@ -226,7 +265,7 @@
                 <p class="mb-0 fw-bold">Credit or Debit Card</p>
               </div>
             </div>
-            <input class="form-check-input" type="radio" name="paymentMethod" id="creditCardOption" checked>
+            <input class="form-check-input" type="radio" name="paymentMethod" id="creditCardOption">
           </div>
           <!-- Payment Option 2: Cash on Delivery -->
           <div class="payment-option d-flex align-items-center justify-content-between p-3 mb-3 border rounded">
@@ -259,17 +298,6 @@
 
 </html>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-    Launch demo modal
-  </button>
-
-
-
-
-
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -278,6 +306,8 @@
 
 
 <script>
+    var total = 0, discount = 0, deliveryFee = 300;
+
     $(document).ready(function () {
         // Load order data via AJAX
         function loadOrderData(cartIds) {
@@ -308,7 +338,6 @@
             $('.shipping-address').text(address);
 
             let itemsHTML = '';
-            let total = 0, discount = 0, deliveryFee = 300;
 
             data.items.forEach(item => {
                 let imageUrl = item.image ? `/storage/${item.image}` : '/images/placeholder.png';
@@ -341,6 +370,29 @@
         // Fetch data for the initial load
         const cartIds = {!! json_encode(request('cart_ids', [])) !!};
         loadOrderData(cartIds);
+
+
+        $(document).on('click', '.place-order-btn', function () {
+
+            const paymentMethod = $('input[name="paymentMethod"]:checked').attr('id');
+            console.log(paymentMethod);
+
+            if (!paymentMethod) {
+                alert("Please select a payment method before placing the order!");
+                return;
+            }
+
+            if (paymentMethod === 'creditCardOption') {
+                $('.summary-wrapper').addClass('d-none');
+                $('.payment-wrapper').removeClass('d-none');
+                
+                console.log(total, discount, deliveryFee);
+
+            }
+        });
+
     });
+
+
 
 </script>
