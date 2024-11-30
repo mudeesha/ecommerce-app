@@ -19,8 +19,8 @@ Route::prefix('home')->group(function () {
     Route::get('/product/{id}', [HomeController::class, 'showProduct']);
 });
 
-Route::post('/order/load', [OrderController::class, 'loadOrder'])->name('order.load');
-Route::post('/order/data', [OrderController::class, 'getOrderData'])->name('order.data');
+// Route::post('/order/load', [OrderController::class, 'loadOrder'])->name('order.load');
+// Route::post('/order/data', [OrderController::class, 'getOrderData'])->name('order.data');
 
 
 Route::prefix('cart')->middleware(['auth', 'verified'])->group(function () {
@@ -31,6 +31,17 @@ Route::prefix('cart')->middleware(['auth', 'verified'])->group(function () {
     Route::post('/remove', [CartController::class, 'remove'])->name('cart.remove');
 
 });
+
+// Route::prefix('order')->middleware(['auth', 'verified'])->group(function () {
+//     Route::post('/', [OrderController::class, 'store'])->name('order.store');
+//     Route::get('/', [OrderController::class, 'index'])->name('order.index');
+//     Route::get('/items', [OrderController::class, 'fetch'])->name('order.items');
+//     Route::post('/update', [OrderController::class, 'update'])->name('order.update');
+//     Route::post('/remove', [OrderController::class, 'remove'])->name('order.remove');
+
+// });
+Route::post('/order/create', [OrderController::class, 'create'])->name('order.create');
+Route::get('/order', [OrderController::class, 'index'])->name('order.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -84,7 +95,7 @@ Route::controller(OrderController::class)->group(function(){
 
 });
 
-Route::post('/order/create', [OrderController::class, 'createOrder'])->name('order.create');
-Route::post('/order/stripe', [OrderController::class, 'stripePayment'])->name('order.stripe');
-Route::get('/stripe/callback', [OrderController::class, 'stripeCallback'])->name('stripe.callback');
+// Route::post('/order/create', [OrderController::class, 'createOrder'])->name('order.create');
+// Route::post('/order/stripe', [OrderController::class, 'stripePayment'])->name('order.stripe');
+// Route::get('/stripe/callback', [OrderController::class, 'stripeCallback'])->name('stripe.callback');
 

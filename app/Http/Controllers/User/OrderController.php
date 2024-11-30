@@ -9,6 +9,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Stripe;
+use Illuminate\Support\Facades\Auth;
+
 
 class OrderController extends Controller
 {
@@ -19,20 +21,24 @@ class OrderController extends Controller
         $this->orderService = $orderService;
     }
 
-    public function loadOrder(OrderAddRequest $request)
+    public function create(Request $request)
     {
-        return view('order/index', ['cart_ids' => $request->cart_ids]);
+
+        $cartData = $request->input('cart');  // Cart items
+        $prices = $request->input('prices');
+
+        session(['order_data' => $cartData, 'order_prices' => $prices]);
+        return response()->json(['status' => true]);
     }
 
-    public function getOrderData(OrderAddRequest $request)
+    public function index()
     {
-        $data = $this->orderService->getOrderDetails($request->validated());
-        return response()->json(['status' => true, 'data' => $data]);
+        $order = session('order_data');
+        $prices = session('order_prices');
+
+        // Pass both the order data and prices to the view
+        return view('order.index', compact('order', 'prices'));
     }
 
-    public function stripe()
-    {
-        return view('stripe');
-    }
 
 }
