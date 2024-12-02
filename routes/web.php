@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\User\PaymentController;
 Route::get('/test', function () {
     return view('test.index');
 });
@@ -42,6 +43,9 @@ Route::prefix('cart')->middleware(['auth', 'verified'])->group(function () {
 // });
 Route::post('/order/create', [OrderController::class, 'create'])->name('order.create');
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');
+
+Route::post('/add-card', [PaymentController::class, 'addCard'])->name('add.card');
+Route::post('/make-payment', [PaymentController::class, 'makePayment'])->name('make.payment');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

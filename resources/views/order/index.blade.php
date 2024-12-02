@@ -259,7 +259,7 @@
 		</div>
 	</header>
 
-    @include('order.paymentModal')
+    @include('order.paymentModal');
 	<!-- Cart -->
 	<div class="wrap-header-cart js-panel-cart">
 		<div class="s-full js-hide-cart"></div>
@@ -362,7 +362,7 @@
 
 
 	<!-- Shoping Cart -->
-	<form class="bg0 p-t-75 p-b-85">
+	<div class="bg0 p-t-75 p-b-85">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
@@ -376,7 +376,8 @@
 							</div>
 							<div class="flex-right">
 							  <button type="button" class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5 add-payment-button" data-toggle="modal" data-target="#staticBackdrop">Add Payment Method</button>
-                              
+
+
 							</div>
 						  </div>
 
@@ -484,29 +485,43 @@
 
 								<div class="p-t-15">
 									<span class="stext-112 cl8">
-										Calculate Shipping
+										Shipping Address
 									</span>
 
-									<div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-										<select class="js-select2" name="time">
-											<option>Select a country...</option>
-											<option>USA</option>
-											<option>UK</option>
-										</select>
-										<div class="dropDownSelect2"></div>
+									<div class="bg0 m-b-12 m-t-9">
+										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line1">
+                                            {{$order_address}}
+                                        </div>
 									</div>
 
-									<div class="bor8 bg0 m-b-12">
-										<input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="state" placeholder="State /  country">
+									<div class="bg0 m-b-12 m-t-9">
+										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line2">
+                                            address line 2
+                                        </div>
 									</div>
 
-									<div class="bor8 bg0 m-b-22">
-										<input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="postcode" placeholder="Postcode / Zip">
+									<div class="bg0 m-b-12 m-t-9">
+										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line3">
+                                            address line 3
+                                        </div>
 									</div>
+
+                                    <div class="bg0 m-b-12 m-t-9">
+										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line3">
+                                            District
+                                        </div>
+									</div>
+
+                                    <div class="bg0 m-b-12 m-t-9">
+										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line3">
+                                            postal code
+                                        </div>
+									</div>
+
 
 									<div class="flex-w">
 										<div class="flex-c-m stext-101 cl2 size-115 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer">
-											Update Totals
+											Update Address
 										</div>
 									</div>
 
@@ -525,17 +540,18 @@
 								<span class="mtext-110 cl2">
 									LKR {{ $prices[0]['cartTotal'] }}
 								</span>
+                                <input type="hidden" id="payment-amount" value="{{ $prices[0]['cartTotal'] }}"></input>
 							</div>
 						</div>
 
-						<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-							Proceed to Checkout
+						<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15" id="btn-pay">
+							Buy Now
 						</button>
 					</div>
 				</div>
 			</div>
 		</div>
-	</form>
+	</div>
 
 
 
@@ -741,3 +757,47 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 </body>
 </html>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+$(document).ready(function () {
+
+    $(document).on('click', '#btn-pay', function (e) {
+        console.log("clicked pay button");
+        e.preventDefault();
+
+        const amount = $('#payment-amount').val().trim();
+        if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+            console.log('amount missing');
+            return;
+        }
+
+        $.ajax({
+            url: '/make-payment', // Your backend endpoint for making payments
+            type: 'POST',
+            data: {
+                amount: amount,
+                _token: '{{ csrf_token() }}' // Add CSRF token
+            },
+            success: function (response) {
+                if (response.status) {
+                    alert('Payment successful');
+                } else {
+                    console.error('Error:', response.message);
+                    console.log('Payment failed: ' + response.message);
+                }
+            },
+            error: function (xhr) {
+                console.error('Request failed:', xhr.responseText);
+                console.log('An error occurred. Please try again.');
+            }
+        });
+    });
+
+});
+</script>

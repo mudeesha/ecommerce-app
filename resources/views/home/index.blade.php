@@ -118,13 +118,31 @@
 							<i class="zmdi zmdi-search"></i>
 						</div>
 
-						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="2">
-							<i class="zmdi zmdi-shopping-cart"></i>
-						</div>
+                        @if(Auth::check())
+                            <a href="{{route('dashboard')}}" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+                                <i class="zmdi zmdi-account"></i>
+                            </a>
 
-						<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
-							<i class="zmdi zmdi-favorite-outline"></i>
-						</a>
+                            <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="2">
+                                <i class="zmdi zmdi-shopping-cart"></i>
+                            </div>
+
+                            <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+                                <i class="zmdi zmdi-favorite-outline"></i>
+                            </a>
+                        @else
+                            <a href="{{ route('login') }}"class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-11">
+                                <button id="login-btn" class="flex-c-m stext-107 cl0 size-126 bg1 bor1 hov-btn2 p-lr-15 trans-04 login-btn">
+                                    Login
+                                </button>
+                            </a>
+
+                            <a href="{{ route('register') }}" class="icon-header-item cl2 hov-cl1 trans-04 p-r-11">
+                                <button id="register-btn" class="flex-c-m stext-107 cl0 size-126 bg1 bor1 hov-btn2 p-lr-15 trans-04 register-btn">
+                                    Register
+                                </button>
+                            </a>
+                        @endif
 					</div>
 				</nav>
 			</div>

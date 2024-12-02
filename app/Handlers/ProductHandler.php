@@ -106,4 +106,23 @@ class ProductHandler
             throw new Exception('Error deleting product: ' . $e->getMessage());
         }
     }
+
+    public function updateProductStockAfterPayment(array $orderData)
+    {
+        foreach ($orderData as $item) {
+            $product = Product::find($item['product_id']); // Find the product by ID
+            if ($product) {
+                // Subtract the purchased quantity from the stock
+                $product->stock_quantity -= $item['quantity'];
+
+                // Ensure the stock doesn't go below zero
+                if ($product->stock_quantity < 0) {
+                    $product->stock_quantity = 0;
+                }
+
+                // Save the updated product stock quantity
+                $product->save();
+            }
+        }
+    }
 }

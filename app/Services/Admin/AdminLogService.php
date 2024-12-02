@@ -8,10 +8,10 @@ class AdminLogService
 {
     public function logAction($adminId, $action, $tableName, $recordId, $description, $originalData = null, $newData = null)
     {
-        
+
         try {
             $changes = [];
-            
+
             // \Log::debug('Original Data:', (array) $originalData);
             // \Log::debug('New Data:', (array) $newData);
 
@@ -20,7 +20,7 @@ class AdminLogService
                     $oldValue = $originalData[$key] ?? null;
 
                     \Log::debug("Checking field '{$key}': Old Value: {$oldValue}, New Value: {$newValue}");
-                    
+
                     if ($oldValue !== $newValue) {
                         $changes[$key] = [
                             'old' => $oldValue,

@@ -25,9 +25,33 @@
 
         <!-- Address -->
         <div>
-            <x-input-label for="address" :value="__('Address ')" />
-            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" required autofocus autocomplete="address" />
+            <x-input-label for="address_line1" :value="__('Address Line 1')" />
+            <x-text-input id="addres_line1" class="block mt-1 w-full" type="text" name="address_line1" :value="old('address_line1')" required autofocus autocomplete="address_line1" />
+            <x-input-error :messages="$errors->get('address_line1')" class="mt-2" />
+        </div>
+
+        <div>
+            <x-input-label for="address_line2" :value="__('Address Line 2')" />
+            <x-text-input id="address_line2" class="block mt-1 w-full" type="text" name="address_line2" :value="old('address_line2')" />
+            <x-input-error :messages="$errors->get('address_line2')" class="mt-2" />
+        </div>
+
+        <div>
+            <x-input-label for="address_line3" :value="__('Address Line 3')" />
+            <x-text-input id="address_line3" class="block mt-1 w-full" type="text" name="address" :value="old('address_line3')" />
+            <x-input-error :messages="$errors->get('address_line3')" class="mt-2" />
+        </div>
+
+        <div>
+            <x-input-label for="district" :value="__('District')" />
+            <x-text-input id="district" class="block mt-1 w-full" type="text" name="district" :value="old('district')" required autofocus autocomplete="district" />
             <x-input-error :messages="$errors->get('address')" class="mt-2" />
+        </div>
+
+        <div>
+            <x-input-label for="postal_code" :value="__('Postal Code')" />
+            <x-text-input id="postal_code" class="block mt-1 w-full" type="text" name="postal_code" :value="old('address')" required autofocus autocomplete="postal_code" />
+            <x-input-error :messages="$errors->get('postal_code')" class="mt-2" />
         </div>
 
         <!-- Password -->
