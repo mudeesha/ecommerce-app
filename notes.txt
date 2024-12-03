@@ -27,3 +27,25 @@ swal({
 }).then(() => {
     window.location.href = '/order_list'; // Redirect to order list page
 });
+
+
+
+
+
+
+
+
+
+
+STRIPE_KEY=pk_test_51L53SGA5oDtZLAtBuaqWznvZVCNZiqRwUe9s7B0ndFpqpqSLxQD7zbuPjZdIjsNCB7KAXOEok7CSRtdd6TY5Zx0a00GLYEZwVi
+STRIPE_SECRET=sk_test_51L53SGA5oDtZLAtBqQz2BckuVhXJw4wUg68L6N088t4PGVaHdX1brDPqiIZpYNIZFR8dhw0vTJ9h9BL1RqyI9lJX00I4WJtzyB
+
+
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=3c9ae77ad7cd1b
+MAIL_PASSWORD=fd0e4e35f24bd5
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=mudeesha.rightmo@test.com
+MAIL_FROM_NAME="E com Application"
