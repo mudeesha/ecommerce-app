@@ -127,7 +127,6 @@ class ProductHandler
             return true;
         } catch (Exception $e) {
             Log::error('Error updating stock quantities: ' . $e->getMessage());
-            throw $e;
         }
     }
 }

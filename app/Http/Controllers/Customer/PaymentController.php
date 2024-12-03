@@ -125,6 +125,7 @@ class PaymentController extends Controller
             }
 
             //create order
+            \Log::debug("order details: ",(array)$orderData);
             $orderHandler = new OrderHandler();
             $orderHandler->createOrder($user->id, $orderData, $prices, $orderAddress, $paymentType = 'card', $paymentStatus = true);
 

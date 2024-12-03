@@ -783,8 +783,16 @@ $(document).ready(function () {
                 _token: '{{ csrf_token() }}'
             },
             success: function (response) {
+				console.log("payment success");
+				
                 if (response.status) {
-                    alert('Payment successful');
+                    toastr.success('Payment successful', 'Success', {
+                    closeButton: true,
+                    progressBar: true,
+                    onclick: function() {
+                        window.location.href = '/order_list'; // Redirect to order list page
+                    }
+                });
                 }else {
                     console.error(response);
                 }

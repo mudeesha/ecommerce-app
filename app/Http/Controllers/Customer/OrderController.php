@@ -12,6 +12,7 @@ use Stripe\Stripe;
 use Stripe\Charge;
 use Stripe\Exception\CardException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 
 class OrderController extends Controller
@@ -33,6 +34,7 @@ class OrderController extends Controller
 
         $cartData = $request->input('cart');  // Cart items
         $prices = $request->input('prices');
+        \Log::debug('cart items: ' , (array)$cartData );
 
         $user = auth()->user();
 

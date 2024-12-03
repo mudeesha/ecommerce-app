@@ -31,7 +31,7 @@
 
         /* Styling for the "Place Order" button */
         .place-order-btn {
-            background-color: #ff6a00;
+            background-color: #d70018;;
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -67,65 +67,64 @@
         }
 
         /* modal */
-/* Modal Customization */
-.modal-header {
-  border-bottom: none;
-}
+        .modal-header {
+        border-bottom: none;
+        }
 
-.modal-title {
-  font-size: 18px;
-  font-weight: bold;
-}
+        .modal-title {
+        font-size: 18px;
+        font-weight: bold;
+        }
 
-/* Payment Options */
-.payment-option {
-  cursor: pointer;
-  background-color: #f9f9f9;
-  transition: background-color 0.3s ease;
-}
+        /* Payment Options */
+        .payment-option {
+        cursor: pointer;
+        background-color: #f9f9f9;
+        transition: background-color 0.3s ease;
+        }
 
-.payment-option:hover {
-  background-color: #eef5ff;
-}
+        .payment-option:hover {
+        background-color: #eef5ff;
+        }
 
-.payment-option p {
-  font-size: 16px;
-}
+        .payment-option p {
+        font-size: 16px;
+        }
 
-/* Radio Button Customization */
-.form-check-input {
-  transform: scale(1.3);
-  accent-color: #007bff;
-}
+        /* Radio Button Customization */
+        .form-check-input {
+        transform: scale(1.3);
+        accent-color: #007bff;
+        }
 
-/* Add New Card Link */
-#addNewCard {
-  font-size: 14px;
-  font-weight: bold;
-  text-decoration: underline;
-}
+        /* Add New Card Link */
+        #addNewCard {
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: underline;
+        }
 
-#addNewCard:hover {
-  text-decoration: none;
-}
+        #addNewCard:hover {
+        text-decoration: none;
+        }
 
-/* Alert Styling */
-.alert-success {
-  background-color: #e9f7ef;
-  color: #155724;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-}
+        /* Alert Styling */
+        .alert-success {
+        background-color: #e9f7ef;
+        color: #155724;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        }
 
-/* Continue Button */
-.btn-primary {
-  background-color: #007bff;
-  border: none;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 10px;
-}
+        /* Continue Button */
+        .btn-primary {
+        background-color: #007bff;
+        border: none;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px;
+        }
 
 
     </style>
@@ -289,7 +288,7 @@
         </div>
         <!-- Modal Footer -->
         <div class="modal-footer border-0">
-          <button type="button" class="btn btn-primary w-100 fw-bold">Continue</button>
+          <button type="button" class="btn btn-primary w-100 fw-bold" data-bs-dismiss="modal" aria-label="Close">Continue</button>
         </div>
       </div>
     </div>
@@ -309,7 +308,6 @@
     var total = 0, discount = 0, deliveryFee = 300;
 
     $(document).ready(function () {
-        // Load order data via AJAX
         function loadOrderData(cartIds) {
             $.ajax({
                 url: '{{ route("order.data") }}',
@@ -332,7 +330,6 @@
             });
         }
 
-        // Render Order Details
         function renderOrderDetails(data) {
             const address = data.user.address;
             $('.shipping-address').text(address);
@@ -359,7 +356,7 @@
 
             $('.order-items').append(itemsHTML);
 
-            // Update the summary
+            //Update the summary
             const totalCost = total + deliveryFee - discount;
             $('.total-item-costs').text(`LKR ${total}`);
             $('.delivery-fee').text(`LKR ${deliveryFee}`);
@@ -367,8 +364,10 @@
             $('.total-cost').text(`LKR ${totalCost}`);
         }
 
-        // Fetch data for the initial load
+        //Fetch data for the initial load
         const cartIds = {!! json_encode(request('cart_ids', [])) !!};
+        console.log("cart ids: ", cartIds);
+        
         loadOrderData(cartIds);
 
 

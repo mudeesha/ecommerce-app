@@ -663,7 +663,7 @@ $(document).ready(function () {
             type: 'GET',
             success: function (response) {
                 products = response.data;
-
+				
                 if (response.status) {
                     renderCartItems(response.data); // Populate cart items
                     updateCartSummary(response.data); // Update summary
@@ -784,7 +784,7 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (response.status) {
-                    fetchCartItems(); // Refresh cart
+                    fetchCartItems();
                 } else {
                     alert(response.message);
                 }
@@ -877,7 +877,7 @@ $(document).ready(function () {
         // Prepare the cart data (product items)
         const cartData = products.filter(item => $(`input[cart-item-id="${item.id}"]`).is(':checked'))
                                 .map(item => ({
-                                    id: item.id,
+                                    id: item.product_id,
                                     name: item.product.name,
                                     quantity: item.quantity,
                                     price: item.product.price,
