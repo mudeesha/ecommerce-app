@@ -6,9 +6,9 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\User\CartController;
-use App\Http\Controllers\User\OrderController;
-use App\Http\Controllers\User\PaymentController;
+use App\Http\Controllers\Customer\CartController;
+use App\Http\Controllers\Customer\OrderController;
+use App\Http\Controllers\Customer\PaymentController;
 Route::get('/test', function () {
     return view('test.index');
 });
@@ -41,11 +41,11 @@ Route::prefix('cart')->middleware(['auth', 'verified'])->group(function () {
 //     Route::post('/remove', [OrderController::class, 'remove'])->name('order.remove');
 
 // });
-Route::post('/order/create', [OrderController::class, 'create'])->name('order.create');
-Route::get('/order', [OrderController::class, 'index'])->name('order.index');
+Route::post('/order/create', [OrderController::class, 'create'])->name('order.create')->middleware(['auth','user']);
+Route::get('/order', [OrderController::class, 'index'])->name('order.index')->middleware(['auth','user']);
 
-Route::post('/add-card', [PaymentController::class, 'addCard'])->name('add.card');
-Route::post('/make-payment', [PaymentController::class, 'makePayment'])->name('make.payment');
+Route::post('/add-card', [PaymentController::class, 'addCard'])->name('add.card')->middleware(['auth','user']);
+Route::post('/make-payment', [PaymentController::class, 'makePayment'])->name('make.payment')->middleware(['auth','user']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -61,10 +61,11 @@ require __DIR__.'/auth.php';
 
 
 //admin
-route::get('admin/dashboard', [HomeController::class, 'index'])->middleware(['auth','admin']);
+// route::get('admin/dashboard', [HomeController::class, 'index'])->middleware(['auth','admin']);
 
 
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('dashboard', [HomeController::class, 'admin']);
     // Category Routes
     Route::prefix('category')->group(function () {
         Route::get('view', [AdminCategoryController::class, 'returnView']);
@@ -88,7 +89,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
 
 Route::get('/abc', function () {
-    return view('order/index');
+    return view('admin/index');
 });
 
 Route::controller(OrderController::class)->group(function(){

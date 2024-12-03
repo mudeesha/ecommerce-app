@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User;
+namespace App\Services\Customer;
 
 use App\Handlers\CartHandler;
 use Exception;

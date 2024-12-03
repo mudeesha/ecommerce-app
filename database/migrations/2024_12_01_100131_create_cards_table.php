@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('cardholder_name');
             $table->string('card_last4');
-            $table->string('stripe_card_id'); // Save Stripe's card ID
-            $table->string('stripe_customer_id')->nullable();
+            $table->string('stripe_card_id');
+            $table->string('stripe_customer_id');
             $table->string('expiration_date');
             $table->timestamps();
 

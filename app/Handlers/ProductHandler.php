@@ -5,17 +5,12 @@ namespace App\Handlers;
 use App\Models\Product;
 use App\Models\AdminLog;
 use App\Services\Admin\AdminLogService;
+use Illuminate\Support\Facades\Log;
 
 use Exception;
 
 class ProductHandler
 {
-    protected $adminLogService;
-
-    public function __construct(AdminLogService $adminLogService)
-    {
-        $this->adminLogService = $adminLogService;
-    }
 
     public function index(array $params)
     {
@@ -51,7 +46,8 @@ class ProductHandler
                 // $product->created_by = auth()->id();
                 $product->save();
 
-                $this->adminLogService->logAction(auth()->id(), 'create', 'products', $product->id, 'Created a new product');
+                $adminLogService = new AdminLogService;
+                $adminLogService->logAction(auth()->id(), 'create', 'products', $product->id, 'Created a new product');
 
             } catch (Exception $e) {
                 \Log::error('Error adding product: ' . $e->getMessage());
@@ -83,7 +79,8 @@ class ProductHandler
             $product->fill($data);
             $product->save();
 
-            $this->adminLogService->logAction(auth()->id(), 'update', 'products', $product->id, 'Updated a product', $originalData, $data);
+            $adminLogService = new AdminLogService;
+            $adminLogService->logAction(auth()->id(), 'update', 'products', $product->id, 'Updated a product', $originalData, $data);
 
         } catch (Exception $e) {
             throw new Exception('Error updating product: ' . $e->getMessage());
@@ -107,22 +104,30 @@ class ProductHandler
         }
     }
 
-    public function updateProductStockAfterPayment(array $orderData)
+    public function updateProductStockAfterPayment($orderData)
     {
-        foreach ($orderData as $item) {
-            $product = Product::find($item['product_id']); // Find the product by ID
-            if ($product) {
-                // Subtract the purchased quantity from the stock
-                $product->stock_quantity -= $item['quantity'];
-
-                // Ensure the stock doesn't go below zero
-                if ($product->stock_quantity < 0) {
-                    $product->stock_quantity = 0;
+        try {
+            foreach ($orderData as $item) {
+                $product = Product::find($item['id']);
+                if ($product) {
+                    \Log::debug('product:: ' . $product);
+                    // Ensure stock is sufficient before updating
+                    if ($product->stock_quantity >= $item['quantity']) {
+                        $product->stock_quantity -= $item['quantity'];
+                        $product->save();
+                    } else {
+                        throw new Exception("Insufficient stock for product ID {$item['id']} ({$product->name})");
+                    }
+                } else {
+                    throw new Exception("Product ID {$item['id']} not found.");
                 }
-
-                // Save the updated product stock quantity
-                $product->save();
             }
+
+            Log::info('Stock quantities updated successfully.');
+            return true;
+        } catch (Exception $e) {
+            Log::error('Error updating stock quantities: ' . $e->getMessage());
+            throw $e;
         }
     }
 }

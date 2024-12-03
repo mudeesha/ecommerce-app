@@ -14,6 +14,8 @@ class Card extends Model
         'cardholder_name',
         'card_last4',
         'stripe_card_id',
+        'stripe_customer_id',
         'expiration_date',
     ];
 }
+

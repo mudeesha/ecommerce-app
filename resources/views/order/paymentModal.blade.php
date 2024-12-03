@@ -94,12 +94,13 @@
 </head>
 
 
-<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+{{-- <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> --}}
+<div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
        <div class="modal-content">
           <div class="modal-body">
              <div class="text-right">
-                <i class="fa fa-close close" data-dismiss="modal"></i>
+                <i class="fa fa-close close" data-bs-dismiss="modal"></i>
              </div>
              <div class="tabs mt-3">
                 <!-- Tabs for Payment Methods -->
@@ -187,6 +188,7 @@
 
 <script>
     $(document).ready(function () {
+
         const stripe = Stripe('{{ config("services.stripe.key") }}');  // Your Stripe public key
         const elements = stripe.elements();
         let card = null;
@@ -260,10 +262,10 @@
         // Send the paymentMethod ID to the server
         function saveCardToServer(paymentMethodId) {
             $.ajax({
-                url: '/add-card',  // Replace with your backend endpoint for adding a card
+                url: '/add-card',
                 type: 'POST',
                 data: {
-                    paymentMethodId: paymentMethodId,  // Ensure paymentMethodId is being sent
+                    paymentMethodId: paymentMethodId,
                     cardholder_name: $('#cardholder-name').val().trim(),
                     _token: '{{ csrf_token() }}'
                 },

@@ -916,8 +916,8 @@ $(document).ready(function () {
                     alert('Failed to proceed to checkout.');
                 }
             },
-            error: function () {
-                alert('An error occurred. Please try again.');
+            error: function (xhr) {
+                console.log(xhr);
             }
         });
     });

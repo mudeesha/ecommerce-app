@@ -95,8 +95,12 @@
                     $('#previewModal .stock').text(`${response.stock_quantity} available`);
                     $('#previewModal .add-to-cart-btn').attr('data-id', response.id);
                 },
-                error: function () {
-                    alert('Failed to load product details. Please try again.');
+                error: function (xhr) {
+                    if (xhr.status === 401){
+                        window.location.href = '/login';
+                    }else{
+                        console.log('Failed to load product details. Please try again.');
+                    }
                 }
             });
         });
@@ -147,7 +151,9 @@
                                 tosterAlert("error", errors[key][0]);
                             }
                         }
-                    } else {
+                    } else if (xhr.status === 401){
+                        window.location.href = '/login';
+                    }else {
                         console.error('Error adding product:', xhr);
                         tosterAlert("error", "An unexpected error occurred.");
                     }
@@ -224,8 +230,12 @@
                     mainRow.append(row);
                 });
             },
-            error: function (err) {
-                console.error('Error fetching products:', err);
+            error: function (xhr) {
+                if (xhr.status === 401){
+                    window.location.href = '/login';
+                }else{
+                    console.error('Error fetching products:', xhr);
+                }
             }
         });
     }

@@ -375,9 +375,7 @@
 							  <p class="stext-102 cl3">to top up transactions balance</p>
 							</div>
 							<div class="flex-right">
-							  <button type="button" class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5 add-payment-button" data-toggle="modal" data-target="#staticBackdrop">Add Payment Method</button>
-
-
+                              <button type="button" class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5 add-payment-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Payment Method</button>
 							</div>
 						  </div>
 
@@ -490,31 +488,31 @@
 
 									<div class="bg0 m-b-12 m-t-9">
 										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line1">
-                                            {{$order_address}}
+                                            {{ $order_address['address_line1'] }}
                                         </div>
 									</div>
 
 									<div class="bg0 m-b-12 m-t-9">
 										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line2">
-                                            address line 2
+                                            {{ $order_address['address_line2'] }}
                                         </div>
 									</div>
 
 									<div class="bg0 m-b-12 m-t-9">
 										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line3">
-                                            address line 3
+                                            {{ $order_address['address_line3'] }}
                                         </div>
 									</div>
 
                                     <div class="bg0 m-b-12 m-t-9">
 										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line3">
-                                            District
+                                            {{ $order_address['district'] }}
                                         </div>
 									</div>
 
                                     <div class="bg0 m-b-12 m-t-9">
 										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line3">
-                                            postal code
+                                            {{ $order_address['zip_code'] }}
                                         </div>
 									</div>
 
@@ -778,18 +776,17 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: '/make-payment', // Your backend endpoint for making payments
+            url: '/make-payment',
             type: 'POST',
             data: {
                 amount: amount,
-                _token: '{{ csrf_token() }}' // Add CSRF token
+                _token: '{{ csrf_token() }}'
             },
             success: function (response) {
                 if (response.status) {
                     alert('Payment successful');
-                } else {
-                    console.error('Error:', response.message);
-                    console.log('Payment failed: ' + response.message);
+                }else {
+                    console.error(response);
                 }
             },
             error: function (xhr) {

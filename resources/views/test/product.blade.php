@@ -121,6 +121,8 @@
         });
 
         $(document).on('click', '.add-to-cart-btn', function () {
+            console.log("hiii");
+
             let productId = $(this).attr('data-id');
             console.log(productId);
             console.log(quantity);
@@ -138,6 +140,8 @@
                     // updateCartCount();
                 },
                 error: function(xhr) {
+                    console.log(xhr.status);
+
                     if (xhr.status === 400) {
                         swal(xhr.responseJSON.error); // Show the "already added" message
                     } else if (xhr.status === 422) {
@@ -147,6 +151,8 @@
                                 tosterAlert("error", errors[key][0]);
                             }
                         }
+                    } else if (xhr.status === 401) {
+                        window.location.href = '/login';
                     } else {
                         console.error('Error adding product:', xhr);
                         tosterAlert("error", "An unexpected error occurred.");

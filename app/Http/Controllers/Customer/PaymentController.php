@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
-use App\Handler\ProductHandler;
+use App\Handlers\Customer\OrderHandler;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Customer;
@@ -21,7 +21,7 @@ class PaymentController extends Controller
         // Validate incoming request
         $request->validate([
             'cardholder_name' => 'required|string',
-            'paymentMethodId' => 'required|string', // Ensure this field is present
+            'paymentMethodId' => 'required|string',
         ]);
 
         try {
@@ -48,6 +48,8 @@ class PaymentController extends Controller
             // Attach the payment method
             $paymentMethod = PaymentMethod::retrieve($paymentMethodId);
             $paymentMethod->attach(['customer' => $customer->id]);
+            \Log::error("customer id: " . $paymentMethod->customer);
+
 
             // Check if the card already exists
             $existingCard = Card::where('stripe_card_id', $paymentMethod->id)->first();
@@ -91,10 +93,12 @@ class PaymentController extends Controller
 
             // Retrieve default card for the user
             $card = Card::where('user_id', $user->id)->first();
+            \Log::debug("user card: " . $card);
             if (!$card) {
+                \Log::debug("card not found: ");
                 return response()->json(['status' => false, 'message' => 'No card found for this user']);
             }
-            \Log::debug("card: " . $card);
+
 
             // Create a PaymentIntent
             $paymentIntent = PaymentIntent::create([
@@ -105,20 +109,30 @@ class PaymentController extends Controller
                 'off_session' => true,
                 'confirm' => true,
             ]);
+            \Log::debug("payment success");
 
-            // Retrieve the order data from the session
+            // // Retrieve the order data from the session
             $orderData = session('order_data');
+            $prices = session('order_prices');
+            $orderAddress = session('order_address');
+
+            // \Log::debug($orderData);
+            // \Log::debug($prices);
+            // \Log::debug($orderAddress);
             if (!$orderData) {
+                \Log::debug("order data not found");
                 return response()->json(['status' => false, 'message' => 'Order data not found']);
             }
 
-            // Initialize the OrderHandler and update the product stock
+            //create order
             $orderHandler = new OrderHandler();
-            $orderHandler->updateProductStock($orderData);
+            $orderHandler->createOrder($user->id, $orderData, $prices, $orderAddress, $paymentType = 'card', $paymentStatus = true);
 
-            return response()->json(['status' => true, 'message' => 'Payment successful', 'paymentIntent' => $paymentIntent]);
+            // return response()->json(['status' => true, 'message' => 'Payment successful', 'paymentIntent' => $paymentIntent]);
+            \Log::debug("end ");
 
         } catch (\Exception $e) {
+            \Log::debug("hiiiiiiiiiii: ".$e);
             return response()->json(['status' => false, 'message' => $e->getMessage()]);
         }
     }

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Home\ProductFetchRequest;
 use App\Http\Requests\Home\ProductShowRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -20,6 +21,10 @@ class HomeController extends Controller
 
     public function home() {
         return view('home.index');
+    }
+
+    public function admin() {
+        return view('admin.index');
     }
 
     public function index(ProductFetchRequest $request): JsonResponse

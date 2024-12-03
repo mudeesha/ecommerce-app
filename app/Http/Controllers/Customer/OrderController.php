@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderAddRequest;
-use App\Services\User\OrderService;
+use App\Services\Customer\OrderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -25,7 +25,7 @@ class OrderController extends Controller
 
     public function create(Request $request)
     {
-        // Validate incoming request
+        //Validate incoming request
         $request->validate([
             'cart' => 'required|array',
             'prices' => 'required|array',
@@ -35,7 +35,14 @@ class OrderController extends Controller
         $prices = $request->input('prices');
 
         $user = auth()->user();
-        $address = $user->address;
+
+        $address = [
+            'address_line1' => $user->address_line1,
+            'address_line2' => $user->address_line2,
+            'address_line3' => $user->address_line3,
+            'district' => $user->district,
+            'zip_code' => $user->zip_code,
+        ];
 
         session(['order_data' => $cartData, 'order_prices' => $prices, 'order_address' => $address]);
         return response()->json(['status' => true]);
