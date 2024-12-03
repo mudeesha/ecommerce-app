@@ -10,6 +10,8 @@ use Stripe\Customer;
 use Stripe\PaymentMethod;
 use App\Models\Card;
 use Stripe\PaymentIntent;
+use App\Mail\PaymentSuccessMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 
 
@@ -65,15 +67,15 @@ class PaymentController extends Controller
                     'expiration_date' => $paymentMethod->card->exp_month . '/' . $paymentMethod->card->exp_year, // Format expiration date as MM/YYYY
                 ]);
 
-                return response()->json(['status' => true, 'message' => 'Card added successfully']);
+                return response()->json(['status' => true, 'error'=>'', 'message' => 'Card added successfully']);
             } else {
-                return response()->json(['status' => false, 'message' => 'Card already exists in the database']);
+                return response()->json(['status' => true, 'error' => 'card_exist', 'message' => 'Card already exists in the database']);
             }
         } catch (\Exception $e) {
             // Log the error message for debugging purposes
             \Log::error("Error adding card: " . $e->getMessage());
 
-            return response()->json(['status' => false, 'message' => $e->getMessage()]);
+            return response()->json(['status' => false, 'error' => $e->getMessage(), 'message' => 'card adind faield, please contact support team.']);
         }
     }
 
@@ -96,22 +98,10 @@ class PaymentController extends Controller
             \Log::debug("user card: " . $card);
             if (!$card) {
                 \Log::debug("card not found: ");
-                return response()->json(['status' => false, 'message' => 'No card found for this user']);
+                return response()->json(['status' => false, 'error'=>'card_not_found', 'message' => 'No card found for this user']);
             }
 
-
-            // Create a PaymentIntent
-            $paymentIntent = PaymentIntent::create([
-                'amount' => $request->amount * 100, // Amount in cents
-                'currency' => 'lkr',
-                'customer' => $card->stripe_customer_id,
-                'payment_method' => $card->stripe_card_id,
-                'off_session' => true,
-                'confirm' => true,
-            ]);
-            \Log::debug("payment success");
-
-            // // Retrieve the order data from the session
+            // Retrieve the order data from the session
             $orderData = session('order_data');
             $prices = session('order_prices');
             $orderAddress = session('order_address');
@@ -119,22 +109,74 @@ class PaymentController extends Controller
             // \Log::debug($orderData);
             // \Log::debug($prices);
             // \Log::debug($orderAddress);
+
+
             if (!$orderData) {
                 \Log::debug("order data not found");
-                return response()->json(['status' => false, 'message' => 'Order data not found']);
+                return response()->json(['status' => false, 'error'=>'order_not_found', 'message' => 'Order data not found']);
+            } elseif (!$prices){
+                \Log::debug("prices not found");
+                return response()->json(['status' => false, 'error'=>'prices_not_found', 'message' => 'Prices not found']);
+            } elseif (!$orderAddress) {
+                \Log::debug("address data not found");
+                return response()->json(['status' => false, 'error'=>'address_not_found', 'message' => 'Address not found']);
             }
 
-            //create order
-            \Log::debug("order details: ",(array)$orderData);
-            $orderHandler = new OrderHandler();
-            $orderHandler->createOrder($user->id, $orderData, $prices, $orderAddress, $paymentType = 'card', $paymentStatus = true);
+            try {
+                //create order
+                $orderHandler = new OrderHandler();
 
-            // return response()->json(['status' => true, 'message' => 'Payment successful', 'paymentIntent' => $paymentIntent]);
+                $createdOrderId = $orderHandler->createOrder($user->id, $orderData, $prices, $orderAddress, $paymentType = 'card', $paymentStatus = 'pending');
+                \Log::debug("order created!");
+                try{
+                    // Create a PaymentIntent
+                    $paymentIntent = PaymentIntent::create([
+                        'amount' => $request->amount * 100, // Amount in cents
+                        'currency' => 'lkr',
+                        'customer' => $card->stripe_customer_id,
+                        'payment_method' => $card->stripe_card_id,
+                        'off_session' => true,
+                        'confirm' => true,
+                    ]);
+                    \Log::debug("payment success");
+
+                    // Update the order payment status to 'done'
+                    $orderHandler->updateOrderPaymentStatus($createdOrderId, 'done');
+                    \Log::debug("Payment order status to done: " . $createdOrderId);
+
+                    // Send the success email
+                    \Log::debug("Created order ID: " . $createdOrderId . ", Type: " . gettype($createdOrderId));
+                    Mail::to($user->email)->send(new PaymentSuccessMail($user, $orderData, $createdOrderId, $prices));
+                    \Log::debug("Payment success email sent to: " . $user->email);
+
+                    return response()->json([
+                        'message' => 'Payment Success!.',
+                        'status' => true,
+                    ], 200);
+
+                }catch(\Exception $e){
+                    // Return Stripe error
+                    \Log::error("Stripe payment failed: " . $e->getMessage());
+                    return response()->json([
+                        'message' => 'Payment failed, please try again.',
+                        'details' => $e->getMessage()
+                    ], 500);
+                }
+
+            } catch(\Exception $e) {
+                // Return Stripe error
+                \Log::error("Stripe payment failed: " . $e->getMessage());
+                return response()->json([
+                    'message' => 'Payment failed, please try again.',
+                    'details' => $e->getMessage()
+                ], 500);
+            }
             \Log::debug("end ");
 
         } catch (\Exception $e) {
-            \Log::debug("hiiiiiiiiiii: ".$e);
             return response()->json(['status' => false, 'message' => $e->getMessage()]);
         }
     }
+
+
 }

@@ -40,7 +40,7 @@ class OrderHandler
         ];
     }
 
-    public function createOrder($userId, $orderData, $prices, $orderAddress, $paymentType = null, $paymentStatus = null)
+    public function createOrder($userId, $orderData, $prices, $orderAddress, $paymentType, $paymentStatus)
     {
         DB::beginTransaction();
 
@@ -80,20 +80,36 @@ class OrderHandler
             try {
                 $producthandler = new ProductHandler;
                 $producthandler->updateProductStockAfterPayment($orderData);
-                \Log::debug('updated product table..: ' . $e->getMessage());
+                \Log::debug('updated product table!');
 
-            } catch (Exception $e){
+            } catch (\Exception $e){
                 \Log::error('Error updating product table after order: ' . $e->getMessage());
             }
-        } catch (Exception $e) {
+
+            //Return the created order's ID
+            return $order->id;
+            
+        } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Error creating order: ' . $e->getMessage());
             throw $e;
         }
 
+    }
 
-
-
+    public function updateOrderPaymentStatus($orderId, $status) {
+        try {
+            $order = Order::find($orderId);
+            if ($order) {
+                $order->payment_status = $status;
+                $order->save();
+                \Log::debug("Order payment status updated to 'done'.");
+            } else {
+                \Log::warning("Order not found for Order ID: " . $orderId);
+            }
+        } catch (\Exception $e) {
+            \Log::error("Failed to update order payment status: " . $e->getMessage());
+        }
     }
 
 

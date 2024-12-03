@@ -125,8 +125,27 @@ class ProductHandler
 
             Log::info('Stock quantities updated successfully.');
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Log::error('Error updating stock quantities: ' . $e->getMessage());
         }
+    }
+
+
+    public function checkAvailability(int $productId, int $quantity): bool
+    {
+        // Fetch the product from the database
+        $product = Product::find($productId);
+
+        // Check if the product exists
+        if (!$product) {
+            throw new Exception("Product not found.");
+        }
+
+        // Check if the stock quantity is greater than or equal to the required quantity
+        if ($product->stock_quantity >= $quantity) {
+            return true; // Available
+        }
+
+        return false; // Not enough stock
     }
 }

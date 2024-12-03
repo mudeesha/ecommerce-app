@@ -17,3 +17,13 @@ In Laravel, the paginate() method automatically handles the offset based on the 
 
 SQL equivalent: SELECT * FROM categories LIMIT 7 OFFSET 0; =>        fetchCategories(searchKeyword, 1);
 SQL equivalent: SELECT * FROM categories LIMIT 7 OFFSET 2; =>        fetchCategories(searchKeyword, 2);
+
+
+
+swal({
+    text: response.message,
+    icon: "success", // Add an icon
+    button: "OK", // Customize the button text if needed
+}).then(() => {
+    window.location.href = '/order_list'; // Redirect to order list page
+});

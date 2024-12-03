@@ -783,18 +783,25 @@ $(document).ready(function () {
                 _token: '{{ csrf_token() }}'
             },
             success: function (response) {
-				console.log("payment success");
-				
+
                 if (response.status) {
-                    toastr.success('Payment successful', 'Success', {
-                    closeButton: true,
-                    progressBar: true,
-                    onclick: function() {
-                        window.location.href = '/order_list'; // Redirect to order list page
-                    }
-                });
-                }else {
-                    console.error(response);
+                    swal({
+                        text: response.message,
+                        icon: "success",
+                        button: "OK",
+                    }).then(() => {
+                        window.location.href = '/order_list';
+                    });
+                }else if (response.error=="card_not_found") {
+                    // console.error(response.message);
+                    $('.add-payment-button').click();
+
+                } else if(response.error=="order_not_found") {
+                    console.error(response.message);
+                } else if(response.error=="address_not_found") {
+                    console.error(response.message);
+                }else{
+                    console.error(response.message);
                 }
             },
             error: function (xhr) {

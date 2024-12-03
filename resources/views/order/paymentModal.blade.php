@@ -270,10 +270,15 @@
                     _token: '{{ csrf_token() }}'
                 },
                 success: function (response) {
-                    if (response.status) {
-                        alert('Card added successfully');
+                    if (response.status==false) {
+                        swal(response.message);
+                        console.error(response.error);
                     } else {
-                        console.log('Error: ' + response.message);
+                        if(response.error="card_exist"){
+                            swal(response.message);
+                        } else {
+                            swal(response.message);
+                        }
                     }
                 },
                 error: function (xhr) {
