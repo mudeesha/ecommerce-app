@@ -95,12 +95,8 @@
                     $('#previewModal .stock').text(`${response.stock_quantity} available`);
                     $('#previewModal .add-to-cart-btn').attr('data-id', response.id);
                 },
-                error: function (xhr) {
-                    if (xhr.status === 401){
-                        window.location.href = '/login';
-                    }else{
-                        console.log('Failed to load product details. Please try again.');
-                    }
+                error: function () {
+                    alert('Failed to load product details. Please try again.');
                 }
             });
         });
@@ -125,6 +121,8 @@
         });
 
         $(document).on('click', '.add-to-cart-btn', function () {
+            console.log("hiii");
+
             let productId = $(this).attr('data-id');
             console.log(productId);
             console.log(quantity);
@@ -138,12 +136,14 @@
                     _token: '{{ csrf_token() }}',
                 },
                 success: function (response) {
-                    alert(response.message);
+                    swal(response.message);
                     // updateCartCount();
                 },
                 error: function(xhr) {
+                    console.log(xhr.status);
+
                     if (xhr.status === 400) {
-                        alert(xhr.responseJSON.error); // Show the "already added" message
+                        swal(xhr.responseJSON.error); // Show the "already added" message
                     } else if (xhr.status === 422) {
                         const errors = xhr.responseJSON.errors;
                         for (const key in errors) {
@@ -151,9 +151,9 @@
                                 tosterAlert("error", errors[key][0]);
                             }
                         }
-                    } else if (xhr.status === 401){
+                    } else if (xhr.status === 401) {
                         window.location.href = '/login';
-                    }else {
+                    } else {
                         console.error('Error adding product:', xhr);
                         tosterAlert("error", "An unexpected error occurred.");
                     }
@@ -230,12 +230,8 @@
                     mainRow.append(row);
                 });
             },
-            error: function (xhr) {
-                if (xhr.status === 401){
-                    window.location.href = '/login';
-                }else{
-                    console.error('Error fetching products:', xhr);
-                }
+            error: function (err) {
+                console.error('Error fetching products:', err);
             }
         });
     }

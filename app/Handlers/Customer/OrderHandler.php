@@ -112,6 +112,25 @@ class OrderHandler
         }
     }
 
+    public function clearOrderSession($orderData, $prices, $orderAddress)
+    {
+        \Log::debug('Clearing order session:');
+        \Log::debug('Order Data: ' . json_encode($orderData));
+        \Log::debug('Prices: ' . json_encode($prices));
+        \Log::debug('Order Address: ' . json_encode($orderAddress));
+
+        try {
+            //clear the session data
+            session()->forget('order_data');
+            session()->forget('order_prices');
+            session()->forget('order_address');
+        } catch(\Exception $e){
+            \Log::error("Order session cleared faield: " . $e->getMessage());
+        }
+
+        \Log::debug('Order session cleared successfully.');
+    }
+
 
 
 

@@ -149,6 +149,9 @@ class PaymentController extends Controller
                     Mail::to($user->email)->send(new PaymentSuccessMail($user, $orderData, $createdOrderId, $prices));
                     \Log::debug("Payment success email sent to: " . $user->email);
 
+                    // Clear the session data
+                    $orderHandler->clearOrderSession($orderData, $prices, $orderAddress);
+
                     return response()->json([
                         'message' => 'Payment Success!.',
                         'status' => true,
