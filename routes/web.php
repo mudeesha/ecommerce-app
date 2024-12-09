@@ -43,6 +43,7 @@ Route::prefix('cart')->middleware(['auth', 'verified'])->group(function () {
 // });
 Route::post('/order/create', [OrderController::class, 'create'])->name('order.create')->middleware(['auth','user']);
 Route::get('/order', [OrderController::class, 'index'])->name('order.index')->middleware(['auth','user']);
+Route::get('/orders', [OrderController::class, 'orders'])->name('orders.index')->middleware(['auth','user']);
 
 Route::post('/add-card', [PaymentController::class, 'addCard'])->name('add.card')->middleware(['auth','user']);
 Route::post('/make-payment', [PaymentController::class, 'makePayment'])->name('make.payment')->middleware(['auth','user']);

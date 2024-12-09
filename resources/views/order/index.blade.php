@@ -790,7 +790,7 @@ $(document).ready(function () {
                         icon: "success",
                         button: "OK",
                     }).then(() => {
-                        window.location.href = '/order_list';
+                        window.location.href = '/orders';
                     });
                 }else if (response.error=="card_not_found") {
                     // console.error(response.message);

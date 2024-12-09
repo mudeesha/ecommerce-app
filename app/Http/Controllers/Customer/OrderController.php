@@ -60,6 +60,14 @@ class OrderController extends Controller
         return view('order.index', compact('order', 'prices', 'order_address'));
     }
 
+    public function orders()
+    {
+
+        // Pass both the order data and prices to the view
+        return view('order.order_list');
+    }
+
+
 
 
 }

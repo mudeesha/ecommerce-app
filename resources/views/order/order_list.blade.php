@@ -259,7 +259,6 @@
 		</div>
 	</header>
 
-    @include('order.paymentModal');
 	<!-- Cart -->
 	<div class="wrap-header-cart js-panel-cart">
 		<div class="s-full js-hide-cart"></div>
@@ -362,26 +361,11 @@
 
 
 	<!-- Shoping Cart -->
-	<div class="bg0 p-t-75 p-b-85">
+	<form class="bg0 p-t-75 p-b-85">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+
 					<div class="m-l-25 m-r--38 m-lr-0-xl">
-
-						<!-- address -->
-						<div class="flex-container bor19 p-t-18 p-b-15 p-lr-40 p-lr-15-sm mb-4">
-							<div class="flex-left">
-							  <h5 class="mtext-105 cl2">Payment Methods</h5>
-							  <p class="stext-102 cl3">to top up transactions balance</p>
-							</div>
-							<div class="flex-right">
-                              <button type="button" class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5 add-payment-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Payment Method</button>
-							</div>
-						  </div>
-
-
-
-						<!-- Table -->
 						<div class="wrap-table-shopping-cart">
 							<table class="table-shopping-cart">
 								<tr class="table_head">
@@ -391,31 +375,54 @@
 									<th class="column-4">Quantity</th>
 									<th class="column-5">Total</th>
 								</tr>
-                                @foreach($order as $item)
-                                    <tr class="table_row">
-                                        <td class="column-1">
-                                            <div class="how-itemcart1">
-                                                <img src="{{ asset($item['imageUrl']) }}" alt="{{ $item['name'] }}">
-                                            </div>
-                                        </td>
-                                        <td class="column-2">{{ $item['name'] }}</td>
-                                        <td class="column-3">{{ $item['price'] }}</td>
-                                        <td class="column-4">
-                                            <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                                <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                    <i class="fs-16 zmdi zmdi-minus"></i>
-                                                </div>
 
-                                                <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="{{ $item['quantity'] }}">
+								<tr class="table_row">
+									<td class="column-1">
+										<div class="how-itemcart1">
+											<img src="images/item-cart-04.jpg" alt="IMG">
+										</div>
+									</td>
+									<td class="column-2">Fresh Strawberries</td>
+									<td class="column-3">$ 36.00</td>
+									<td class="column-4">
+										<div class="wrap-num-product flex-w m-l-auto m-r-0">
+											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+												<i class="fs-16 zmdi zmdi-minus"></i>
+											</div>
 
-                                                <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                    <i class="fs-16 zmdi zmdi-plus"></i>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="column-5">{{ $item['price']*$item['quantity'] }}</td>
-                                    </tr>
-                                @endforeach
+											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="1">
+
+											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+												<i class="fs-16 zmdi zmdi-plus"></i>
+											</div>
+										</div>
+									</td>
+									<td class="column-5">$ 36.00</td>
+								</tr>
+
+								<tr class="table_row">
+									<td class="column-1">
+										<div class="how-itemcart1">
+											<img src="images/item-cart-05.jpg" alt="IMG">
+										</div>
+									</td>
+									<td class="column-2">Lightweight Jacket</td>
+									<td class="column-3">$ 16.00</td>
+									<td class="column-4">
+										<div class="wrap-num-product flex-w m-l-auto m-r-0">
+											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+												<i class="fs-16 zmdi zmdi-minus"></i>
+											</div>
+
+											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product2" value="1">
+
+											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+												<i class="fs-16 zmdi zmdi-plus"></i>
+											</div>
+										</div>
+									</td>
+									<td class="column-5">$ 16.00</td>
+								</tr>
 							</table>
 						</div>
 
@@ -433,9 +440,9 @@
 							</div>
 						</div>
 					</div>
-				</div>
 
-				<div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+
+				
 					<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
 						<h4 class="mtext-109 cl2 p-b-30">
 							Cart Totals
@@ -450,21 +457,7 @@
 
 							<div class="size-209">
 								<span class="mtext-110 cl2">
-									LKR {{ $prices[0]['cartSubtotal'] }}
-								</span>
-							</div>
-						</div>
-
-                        <div class="flex-w flex-t bor12 p-b-13">
-							<div class="size-208">
-								<span class="stext-110 cl2">
-									Saved:
-								</span>
-							</div>
-
-							<div class="size-209">
-								<span class="mtext-110 cl2">
-									LKR {{ $prices[0]['cartSaved'] }}
+									$79.65
 								</span>
 							</div>
 						</div>
@@ -478,48 +471,34 @@
 
 							<div class="size-209 p-r-18 p-r-0-sm w-full-ssm">
 								<p class="stext-111 cl6 p-t-2">
-									LKR {{ $prices[0]['shipping'] }}
+									There are no shipping methods available. Please double check your address, or contact us if you need any help.
 								</p>
 
 								<div class="p-t-15">
 									<span class="stext-112 cl8">
-										Shipping Address
+										Calculate Shipping
 									</span>
 
-									<div class="bg0 m-b-12 m-t-9">
-										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line1">
-                                            {{ $order_address['address_line1'] }}
-                                        </div>
+									<div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+										<select class="js-select2" name="time">
+											<option>Select a country...</option>
+											<option>USA</option>
+											<option>UK</option>
+										</select>
+										<div class="dropDownSelect2"></div>
 									</div>
 
-									<div class="bg0 m-b-12 m-t-9">
-										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line2">
-                                            {{ $order_address['address_line2'] }}
-                                        </div>
+									<div class="bor8 bg0 m-b-12">
+										<input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="state" placeholder="State /  country">
 									</div>
 
-									<div class="bg0 m-b-12 m-t-9">
-										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line3">
-                                            {{ $order_address['address_line3'] }}
-                                        </div>
+									<div class="bor8 bg0 m-b-22">
+										<input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="postcode" placeholder="Postcode / Zip">
 									</div>
-
-                                    <div class="bg0 m-b-12 m-t-9">
-										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line3">
-                                            {{ $order_address['district'] }}
-                                        </div>
-									</div>
-
-                                    <div class="bg0 m-b-12 m-t-9">
-										<div class="stext-111 cl8 plh3  p-lr-15" name="adress_line3">
-                                            {{ $order_address['zip_code'] }}
-                                        </div>
-									</div>
-
 
 									<div class="flex-w">
 										<div class="flex-c-m stext-101 cl2 size-115 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer">
-											Update Address
+											Update Totals
 										</div>
 									</div>
 
@@ -536,20 +515,19 @@
 
 							<div class="size-209 p-t-1">
 								<span class="mtext-110 cl2">
-									LKR {{ $prices[0]['cartTotal'] }}
+									$79.65
 								</span>
-                                <input type="hidden" id="payment-amount" value="{{ $prices[0]['cartTotal'] }}"></input>
 							</div>
 						</div>
 
-						<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15" id="btn-pay">
-							Buy Now
+						<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+							Proceed to Checkout
 						</button>
 					</div>
-				</div>
+
 			</div>
 		</div>
-	</div>
+	</form>
 
 
 
@@ -707,26 +685,15 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		</span>
 	</div>
 
-    <script src="{{ asset('vendor/jquery/jquery-3.2.1.min.js') }}"></script>
-
-    <script src="{{ asset('vendor/animsition/js/animsition.min.js') }}"></script>
-
-    <script src="{{ asset('vendor/bootstrap/js/popper.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-
-    <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
-        <script src="{{ asset('vendor/daterangepicker/moment.min.js') }}"></script>
-    <script src="{{ asset('vendor/daterangepicker/daterangepicker.js') }}"></script>
-
-    <script src="{{ asset('vendor/slick/slick.min.js') }}"></script>
-    <script src="{{ asset('js/slick-custom.js') }}"></script>
-
-    <script src="{{ asset('vendor/parallax100/parallax100.js') }}"></script>
-    <script src="{{ asset('vendor/isotope/isotope.pkgd.min.js') }}"></script>
-
-    <script src="{{ asset('vendor/sweetalert/sweetalert.min.js') }}"></script>
-    <script src="{{ asset('vendor/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
+<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
 	<script>
 		$(".js-select2").each(function(){
 			$(this).select2({
@@ -735,7 +702,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			});
 		})
 	</script>
-
+<!--===============================================================================================-->
+	<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 	<script>
 		$('.js-pscroll').each(function(){
 			$(this).css('position','relative');
@@ -751,7 +721,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			})
 		});
 	</script>
-
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
 
 </body>
 </html>
@@ -762,54 +733,3 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://js.stripe.com/v3/"></script>
 
-<script>
-$(document).ready(function () {
-
-    $(document).on('click', '#btn-pay', function (e) {
-        console.log("clicked pay button");
-        e.preventDefault();
-
-        const amount = $('#payment-amount').val().trim();
-        if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
-            console.log('amount missing');
-            return;
-        }
-
-        $.ajax({
-            url: '/make-payment',
-            type: 'POST',
-            data: {
-                amount: amount,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function (response) {
-
-                if (response.status) {
-                    swal({
-                        text: response.message,
-                        icon: "success",
-                        button: "OK",
-                    }).then(() => {
-                        window.location.href = '/order_list';
-                    });
-                }else if (response.error=="card_not_found") {
-                    // console.error(response.message);
-                    $('.add-payment-button').click();
-
-                } else if(response.error=="order_not_found") {
-                    console.error(response.message);
-                } else if(response.error=="address_not_found") {
-                    console.error(response.message);
-                }else{
-                    console.error(response.message);
-                }
-            },
-            error: function (xhr) {
-                console.error('Request failed:', xhr.responseText);
-                console.log('An error occurred. Please try again.');
-            }
-        });
-    });
-
-});
-</script>
