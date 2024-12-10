@@ -13,6 +13,7 @@ use Stripe\Charge;
 use Stripe\Exception\CardException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Models\OrderItem;
 
 
 class OrderController extends Controller
@@ -67,7 +68,26 @@ class OrderController extends Controller
         return view('order.order_list');
     }
 
+    public function getAll(){
+        try {
+            $orderItems = OrderItem::with('order')
+            ->whereHas('order', function ($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->get();
 
+            if ($orderItems->isEmpty()) {
+                return response()->json([
+                    'message' => 'No order items found for the user.',
+                    'data' => []
+                ]);
+            }
+
+            return response()->json($orderItems->toArray());
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
 
 
 }

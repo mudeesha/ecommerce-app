@@ -88,7 +88,7 @@ class OrderHandler
 
             //Return the created order's ID
             return $order->id;
-            
+
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Error creating order: ' . $e->getMessage());
@@ -130,6 +130,8 @@ class OrderHandler
 
         \Log::debug('Order session cleared successfully.');
     }
+
+
 
 
 
