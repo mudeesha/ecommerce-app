@@ -70,11 +70,11 @@ class OrderController extends Controller
 
     public function getAll(){
         try {
-            $orderItems = OrderItem::with('order')
-            ->whereHas('order', function ($query) {
-                $query->where('user_id', Auth::id());
-            })
-            ->get();
+            $orderItems = OrderItem::with(['order', 'product:id,name'])
+                ->whereHas('order', function ($query) {
+                    $query->where('user_id', Auth::id());
+                })
+                ->get();
 
             if ($orderItems->isEmpty()) {
                 return response()->json([
